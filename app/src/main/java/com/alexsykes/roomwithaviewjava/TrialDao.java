@@ -9,17 +9,13 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface WordDao {
+public interface TrialDao {
+    @Query(("SELECT * FROM trials"))
+    LiveData<List<Trial>> getAllTrials();
 
-    // allowing the insert of the same word multiple times by passing a
-    // conflict resolution strategy
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Word word);
+    void insert(Trial  trial);
 
-    @Query("DELETE FROM word_table")
+    @Query("DELETE FROM trials")
     void deleteAll();
-
-    @Query("SELECT * FROM word_table ORDER BY word ASC")
-    LiveData<List<Word>> getAlphabetizedWords();
-
 }
