@@ -11,7 +11,7 @@ public class Trial {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "name")
-    private String name;
+    public String name;
 //    String club;
 //    String date;
 

@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TrialViewHolder extends RecyclerView.ViewHolder {
     private  final TextView nameTextView;
-    private  final TextView clubTextView;
-    private  final TextView dateTextView;
+  //  private  final TextView clubTextView;
+  //  private  final TextView dateTextView;
 
     public TrialViewHolder(@NonNull View itemView) {
         super(itemView);
         nameTextView = itemView.findViewById(R.id.nameTextView);
-        clubTextView = itemView.findViewById(R.id.clubTextView);
-        dateTextView = itemView.findViewById(R.id.dateTextView);
+  //      clubTextView = itemView.findViewById(R.id.clubTextView);
+  //      dateTextView = itemView.findViewById(R.id.dateTextView);
     }
 
     public void bind(String text) {

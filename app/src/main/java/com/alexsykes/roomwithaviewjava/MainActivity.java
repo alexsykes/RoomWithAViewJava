@@ -27,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         trialViewModel = new ViewModelProvider(this).get(TrialViewModel.class);
-      //  trialViewModel.getAllTrials().observe(this, trials -> {
+        trialViewModel.getAllTrials().observe(this, trials -> {
             // Update the cached copy of the words in the adapter.
-           //  adapter.submitList(trials);
-     //   });
+             adapter.submitList(trials);
+        });
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener( view -> {
             Intent intent = new Intent(MainActivity.this, NewTrialActivity.class);

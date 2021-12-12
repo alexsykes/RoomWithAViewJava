@@ -11,14 +11,14 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Trial.class}, version = 2, exportSchema = false)
+@Database(entities = {Trial.class}, version = 1, exportSchema = false)
 public abstract class TrialRoomDatabase extends RoomDatabase {
 
      abstract TrialDao trialDao();
 
     private static volatile TrialRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
-     static final ExecutorService databaseWriteExecutor =
+    static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
      static TrialRoomDatabase getDatabase(final Context context) {
@@ -26,7 +26,7 @@ public abstract class TrialRoomDatabase extends RoomDatabase {
             synchronized (TrialRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            TrialRoomDatabase.class, "word_database")
+                            TrialRoomDatabase.class, "trial_database")
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
@@ -46,6 +46,8 @@ public abstract class TrialRoomDatabase extends RoomDatabase {
                 // Populate the database in the background.
 
                 TrialDao trialDao = INSTANCE.trialDao();
+                trialDao.deleteAll();
+
                 Trial trial = new Trial("Evening Series");
                 trialDao.insert(trial);
                  trial = new Trial("Club Championship");
