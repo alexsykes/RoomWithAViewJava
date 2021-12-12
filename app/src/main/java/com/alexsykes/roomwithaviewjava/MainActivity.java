@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_TRIAL_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-          //  Trial trial = new Trial(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
-          //  mWordViewModel.insert(trial);
+            String name = data.getStringExtra("name");
+            Trial trial = new Trial(name);
+            trialViewModel.insert(trial);
         } else {
             Toast.makeText(
                     getApplicationContext(),
