@@ -10,12 +10,13 @@ import java.util.List;
 
 @Dao
 public interface TrialDao {
-    @Query(("SELECT * FROM trials"))
-    LiveData<List<Trial>> getAllTrials();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Trial  trial);
 
-    @Query("DELETE FROM trials")
+    @Query("DELETE FROM trial_table")
     void deleteAll();
+
+    @Query("SELECT * FROM trial_table")
+    LiveData<List<Trial>> getAllTrials();
 }

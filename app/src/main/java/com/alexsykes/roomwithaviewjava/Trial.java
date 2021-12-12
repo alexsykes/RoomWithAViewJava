@@ -3,18 +3,17 @@ package com.alexsykes.roomwithaviewjava;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "trials")
+@Entity(tableName = "trial_table")
 public class Trial {
+//    int id;
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "id")
-    int id;
-    String name;
-    String club;
-    String date;
+    @ColumnInfo(name = "name")
+    private String name;
+//    String club;
+//    String date;
 
     public Trial(@NonNull String name) {
         this.name = name;
@@ -34,7 +33,7 @@ public class Trial {
 //        this.date = date;
 //    }
 
-    public Trial getTrial() {
-        return new Trial("Dummy");
+    public String getTrial() {
+        return this.name;
     }
 }
