@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-    private WordViewModel mWordViewModel;
-    public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
+    private TrialViewModel trialViewModel;
+    public static final int NEW_TRIAL_ACTIVITY_REQUEST_CODE = 1;
 
 
     @Override
@@ -22,19 +22,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final WordListAdapter adapter = new WordListAdapter(new WordListAdapter.WordDiff());
+        final TrialListAdapter adapter = new TrialListAdapter(new TrialListAdapter.TrialDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
-        mWordViewModel.getAllWords().observe(this, words -> {
+        trialViewModel = new ViewModelProvider(this).get(TrialViewModel.class);
+      //  trialViewModel.getAllTrials().observe(this, trials -> {
             // Update the cached copy of the words in the adapter.
-            adapter.submitList(words);
-        });
+           //  adapter.submitList(trials);
+     //   });
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener( view -> {
-            Intent intent = new Intent(MainActivity.this, NewWordActivity.class);
-            startActivityForResult(intent, NEW_WORD_ACTIVITY_REQUEST_CODE);
+            Intent intent = new Intent(MainActivity.this, NewTrialActivity.class);
+            startActivityForResult(intent, NEW_TRIAL_ACTIVITY_REQUEST_CODE);
         });
 
     }
@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Word word = new Word(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
-            mWordViewModel.insert(word);
+        if (requestCode == NEW_TRIAL_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+          //  Trial trial = new Trial(data.getStringExtra(NewWordActivity.EXTRA_REPLY));
+          //  mWordViewModel.insert(trial);
         } else {
             Toast.makeText(
                     getApplicationContext(),

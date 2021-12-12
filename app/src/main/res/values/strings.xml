@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">RoomWithAViewJava</string>
     <string name="add_word">Add word…</string>
-    <string name="hint_word">Word...</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="hint_trial_name">Name…</string>
+    <string name="hint_trial_club">Club…</string>
+    <string name="hint_trial_date">Date…</string>
 </resources>

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RoomWithAViewJava">
         <activity
-            android:name=".NewWordActivity"
+            android:name=".NewTrialActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
