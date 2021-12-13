@@ -1,4 +1,4 @@
-package com.alexsykes.roomwithaviewjava;
+package com.alexsykes.trialmonsterclient;
 
 import android.content.Context;
 import android.view.LayoutInflater;

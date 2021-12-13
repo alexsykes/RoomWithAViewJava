@@ -1,4 +1,4 @@
-package com.alexsykes.roomwithaviewjava;
+package com.alexsykes.trialmonsterclient;
 
 import android.content.Context;
 
@@ -47,11 +47,6 @@ public abstract class TrialRoomDatabase extends RoomDatabase {
 
                 TrialDao trialDao = INSTANCE.trialDao();
                 trialDao.deleteAll();
-
-                Trial trial = new Trial("Evening Series");
-                trialDao.insert(trial);
-                 trial = new Trial("Club Championship");
-                trialDao.insert(trial);
 
             });
         }

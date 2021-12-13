@@ -1,4 +1,4 @@
-package com.alexsykes.roomwithaviewjava;
+package com.alexsykes.trialmonsterclient;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,7 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-public class RoomWithAView extends Application {
+public class Trialmonsterclient extends Application {
 
     @Override
     public void onCreate() {

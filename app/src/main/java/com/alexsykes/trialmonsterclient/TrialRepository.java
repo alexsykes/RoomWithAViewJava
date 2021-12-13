@@ -1,4 +1,4 @@
-package com.alexsykes.roomwithaviewjava;
+package com.alexsykes.trialmonsterclient;
 
 import android.app.Application;
 
@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class TrialRepository {
-    private TrialDao trialDao;
-    private LiveData<List<Trial>> allTrials;
+    private final TrialDao trialDao;
+    private final LiveData<List<Trial>> allTrials;
 
     public TrialRepository(Application application) {
         TrialRoomDatabase db = TrialRoomDatabase.getDatabase(application);
@@ -16,9 +16,11 @@ public class TrialRepository {
         allTrials = trialDao.getAllTrials();
     }
 
-   public LiveData<List<Trial>> getAllTrials() { return allTrials; }
+    public LiveData<List<Trial>> getAllTrials() {
+        return allTrials;
+    }
 
-   public void insert(Trial trial) {
+    public void insert(Trial trial) {
         TrialRoomDatabase.databaseWriteExecutor.execute(() ->{
             trialDao.insert(trial);
         });

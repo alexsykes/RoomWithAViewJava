@@ -1,4 +1,4 @@
-package com.alexsykes.roomwithaviewjava;
+package com.alexsykes.trialmonsterclient;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TrialListAdapter extends ListAdapter<Trial, TrialViewHolder> {
 
@@ -28,10 +32,23 @@ public class TrialListAdapter extends ListAdapter<Trial, TrialViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TrialViewHolder holder, int position) {
         Trial current = getItem(position);
+
+        String theDate = current.date;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date sourceDate = null;
+        try {
+            sourceDate = dateFormat.parse(theDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat targetFormat = new SimpleDateFormat("MMM d, yyyy");
+        theDate = targetFormat.format(sourceDate);
+
         holder.nameTextView.setText(current.name);
         holder.clubTextView.setText(current.club);
         holder.locationTextView.setText(current.location);
-        holder.dateTextView.setText(current.date);
+        holder.dateTextView.setText(theDate);
         holder.bind(current, listener);
     }
 

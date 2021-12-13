@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RoomWithAViewJava</string>
+    <string name="app_name">TrialMonster</string>
     <string name="add_word">Add word…</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
@@ -7,4 +7,23 @@
     <string name="hint_trial_club">Club…</string>
     <string name="hint_trial_date">Date…</string>
     <string name="hint_trial_location">Location…</string>
+    <string name="club_name">Club</string>
+    <string name="trial_name">Trial name</string>
+    <string name="venue_name">Venue</string>
+    <string name="event_date">Date</string>
+    <string name="rider">Rider</string>
+    <string name="machine">Machine</string>
+    <string name="riderclass">Class</string>
+    <string name="total">Total</string>
+    <string name="cleans">C</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_5">5</string>
+    <string name="missed">M</string>
+    <string name="message">Loading data…</string>
+    <string name="list_of_trials">The screen displays a list of the trials available for display</string>
+    <string name="list_of_results">This view shows a list of scores for one event</string>
+    <string name="sections_scores">|0000|0000|0000|1010|0000|0000|0000|1010|</string>
+    <string name="section_scores">Section scores</string>
 </resources>

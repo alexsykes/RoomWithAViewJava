@@ -1,4 +1,4 @@
-package com.alexsykes.roomwithaviewjava;
+package com.alexsykes.trialmonsterclient;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -17,6 +17,6 @@ public interface TrialDao {
     @Query("DELETE FROM trial_table")
     void deleteAll();
 
-    @Query("SELECT * FROM trial_table")
+    @Query("SELECT * FROM trial_table ORDER BY id DESC")
     LiveData<List<Trial>> getAllTrials();
 }

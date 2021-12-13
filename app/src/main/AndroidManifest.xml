@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alexsykes.roomwithaviewjava">
+    package="com.alexsykes.trialmonsterclient">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".RoomWithAView"
+        android:name=".Trialmonsterclient"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,11 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RoomWithAViewJava">
         <activity
-            android:name=".ResultListActivity"
+            android:name="com.alexsykes.trialmonsterclient.ResultListActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="com.alexsykes.trialmonsterclient.MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.alexsykes.trialmonsterclient.MainActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewTrialActivity"
+            android:name="com.alexsykes.trialmonsterclient.NewTrialActivity"
             android:exported="false" />
     </application>
 
