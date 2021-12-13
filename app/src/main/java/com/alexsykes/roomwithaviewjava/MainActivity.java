@@ -44,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == NEW_TRIAL_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             String name = data.getStringExtra("name");
-            Trial trial = new Trial(name);
+            String club = data.getStringExtra("club");
+            String date = data.getStringExtra("date");
+            String location = data.getStringExtra("location");
+            Trial trial = new Trial(name, club, date, location);
             trialViewModel.insert(trial);
         } else {
             Toast.makeText(

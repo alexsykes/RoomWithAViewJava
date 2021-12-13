@@ -15,6 +15,7 @@ public class NewTrialActivity extends AppCompatActivity {
     private EditText editTrialName;
     private EditText editTrialClub;
     private EditText editTrialDate;
+    private EditText editTrialLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +24,7 @@ public class NewTrialActivity extends AppCompatActivity {
         editTrialName = findViewById(R.id.edit_trial_name);
         editTrialClub = findViewById(R.id.edit_trial_club);
         editTrialDate = findViewById(R.id.edit_trial_date);
+        editTrialLocation = findViewById(R.id.edit_trial_location);
 
         final Button button = findViewById(R.id.button_save);
         button.setOnClickListener(view -> {
@@ -33,9 +35,11 @@ public class NewTrialActivity extends AppCompatActivity {
                 String name = editTrialName.getText().toString();
                 String club = editTrialClub.getText().toString();
                 String date = editTrialDate.getText().toString();
+                String location = editTrialLocation.getText().toString();
                 replyIntent.putExtra("name", name);
                 replyIntent.putExtra("club", club);
                 replyIntent.putExtra("date", date);
+                replyIntent.putExtra("location", location);
                 setResult(RESULT_OK, replyIntent);
             }
             finish();
