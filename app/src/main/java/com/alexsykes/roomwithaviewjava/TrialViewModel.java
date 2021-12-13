@@ -5,14 +5,11 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.alexsykes.roomwithaviewjava.Trial;
-import com.alexsykes.roomwithaviewjava.TrialRepository;
-
 import java.util.List;
 
 public class TrialViewModel extends AndroidViewModel {
 
-    private TrialRepository mRepository;
+    private final TrialRepository mRepository;
 
     private final LiveData<List<Trial>> mAllTrials;
 
@@ -21,6 +18,7 @@ public class TrialViewModel extends AndroidViewModel {
         mRepository = new TrialRepository(application);
         mAllTrials = mRepository.getAllTrials();
     }
+
 
     LiveData<List<Trial>> getAllTrials() { return mAllTrials; }
 

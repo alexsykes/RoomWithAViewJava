@@ -35,7 +35,7 @@ public abstract class TrialRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+    private static final RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -52,6 +52,7 @@ public abstract class TrialRoomDatabase extends RoomDatabase {
                 trialDao.insert(trial);
                  trial = new Trial("Club Championship");
                 trialDao.insert(trial);
+
             });
         }
     };

@@ -10,6 +10,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +42,36 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, NEW_TRIAL_ACTIVITY_REQUEST_CODE);
         });
 
+        getVolley();
+    }
+
+    private void getVolley() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getApplication().getBaseContext());
+        String url = "https://android.trialmonster.uk/getAndroidPastTrials.php";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        //  textView.setText("Response is: "+ response.substring(0,500));
+                        addTrialsToDb(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Info", "That didn't work!");
+
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    private void addTrialsToDb(String response) {
+        Log.i("Info", "addTrialsToDb: " + response);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -58,5 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickCalled(String id) {
         Log.i("Info", "onClickCalled: " + id);
+        Intent intent = new Intent(MainActivity.this, ResultListActivity.class);
+        intent.putExtra("trialid", id);
+        startActivity(intent);
     }
 }
