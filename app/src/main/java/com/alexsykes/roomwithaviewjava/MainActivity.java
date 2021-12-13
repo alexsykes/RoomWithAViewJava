@@ -1,13 +1,14 @@
 package com.alexsykes.roomwithaviewjava;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,12 +28,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         trialViewModel = new ViewModelProvider(this).get(TrialViewModel.class);
-        trialViewModel.getAllTrials().observe(this, trials -> {
-            // Update the cached copy of the words in the adapter.
-             adapter.submitList(trials);
-        });
+        // Update the cached copy of the words in the adapter.
+        trialViewModel.getAllTrials().observe(this, adapter::submitList);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener( view -> {
+        fab.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, NewTrialActivity.class);
             startActivityForResult(intent, NEW_TRIAL_ACTIVITY_REQUEST_CODE);
         });
@@ -57,4 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickCalled(String id) {
+        Log.i("Info", "onClickCalled: " + id);
+    }
 }

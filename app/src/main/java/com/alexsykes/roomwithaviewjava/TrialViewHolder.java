@@ -1,5 +1,6 @@
 package com.alexsykes.roomwithaviewjava;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +10,27 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TrialViewHolder extends RecyclerView.ViewHolder {
-    private  final TextView nameTextView;
-  //  private  final TextView clubTextView;
-  //  private  final TextView dateTextView;
+    public final TextView nameTextView, dateTextView, clubTextView, locationTextView;
 
     public TrialViewHolder(@NonNull View itemView) {
         super(itemView);
         nameTextView = itemView.findViewById(R.id.nameTextView);
-  //      clubTextView = itemView.findViewById(R.id.clubTextView);
-  //      dateTextView = itemView.findViewById(R.id.dateTextView);
+        clubTextView = itemView.findViewById(R.id.clubTextView);
+        dateTextView = itemView.findViewById(R.id.dateTextView);
+        locationTextView = itemView.findViewById(R.id.locationTextView);
     }
 
-    public void bind(String text) {
-        nameTextView.setText(text);
+    public void bind(Trial trial, final TrialListAdapter.OnItemClickListener listener) {
+        itemView.setOnClickListener(v -> {
+            String id = String.valueOf(trial.id);
+            Context context = v.getContext();
+            ((MainActivity) context).onClickCalled(id);
+
+        });
+        nameTextView.setText(trial.name);
+        clubTextView.setText(trial.club);
+        dateTextView.setText(trial.date);
+        locationTextView.setText(trial.location);
     }
 
     static TrialViewHolder create(ViewGroup parent) {
