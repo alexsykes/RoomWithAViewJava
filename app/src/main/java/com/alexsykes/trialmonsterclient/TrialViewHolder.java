@@ -27,10 +27,10 @@ public class TrialViewHolder extends RecyclerView.ViewHolder {
             ((MainActivity) context).onClickCalled(id);
 
         });
-        nameTextView.setText(trial.name);
-        clubTextView.setText(trial.club);
-        dateTextView.setText(trial.date);
-        locationTextView.setText(trial.location);
+//        nameTextView.setText(trial.name);
+//        clubTextView.setText(trial.club);
+//        dateTextView.setText(trial.date);
+//        locationTextView.setText(trial.location);
     }
 
     static TrialViewHolder create(ViewGroup parent) {

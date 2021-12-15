@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
@@ -32,6 +33,8 @@ public class TrialListAdapter extends ListAdapter<Trial, TrialViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TrialViewHolder holder, int position) {
         Trial current = getItem(position);
+        int backgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.offWhite);
+        int white = ContextCompat.getColor(holder.itemView.getContext(), R.color.colorWhite);
 
         String theDate = current.date;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -50,6 +53,12 @@ public class TrialListAdapter extends ListAdapter<Trial, TrialViewHolder> {
         holder.locationTextView.setText(current.location);
         holder.dateTextView.setText(theDate);
         holder.bind(current, listener);
+
+        if (position % 2 != 0) {
+            holder.itemView.setBackgroundColor(backgroundColor);
+        } else {
+            holder.itemView.setBackgroundColor(white);
+        }
     }
 
     public interface OnItemClickListener {
