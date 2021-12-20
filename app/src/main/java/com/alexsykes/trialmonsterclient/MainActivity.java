@@ -1,9 +1,14 @@
 package com.alexsykes.trialmonsterclient;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,12 +31,18 @@ public class MainActivity extends AppCompatActivity {
     private TrialViewModel trialViewModel;
     public static final int NEW_TRIAL_ACTIVITY_REQUEST_CODE = 1;
     ArrayList<HashMap<String, String>> theTrialList;
+    boolean canConnect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        canConnect = canConnect();
+        if(canConnect) {
+            getTrialsList();
+        } else {
+            showDialog();
+        }
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final TrialListAdapter adapter = new TrialListAdapter(new TrialListAdapter.TrialDiff());
         recyclerView.setAdapter(adapter);
@@ -40,13 +51,21 @@ public class MainActivity extends AppCompatActivity {
         trialViewModel = new ViewModelProvider(this).get(TrialViewModel.class);
         // Update the cached copy of the words in the adapter.
         trialViewModel.getAllTrials().observe(this, adapter::submitList);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(view -> {
-//            Intent intent = new Intent(MainActivity.this, NewTrialActivity.class);
-//            startActivityForResult(intent, NEW_TRIAL_ACTIVITY_REQUEST_CODE);
-//        });
+    }
 
-        getTrialsList();
+    private void showDialog() {
+        new AlertDialog.Builder(this)
+            .setCancelable(true)
+            .setTitle("No Connection")
+            .setMessage("TrialMonster needs an internet connection to work")
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Continue with delete operation
+                    dialog.cancel();;
+                }
+            })
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show();
     }
 
     private void getTrialsList() {
@@ -98,29 +117,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == NEW_TRIAL_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            String name = data.getStringExtra("name");
-//            String club = data.getStringExtra("club");
-//            String date = data.getStringExtra("date");
-//            String location = data.getStringExtra("location");
-//            Trial trial = new Trial(name, club, date, location);
-//            trialViewModel.insert(trial);
-//        } else {
-//            Toast.makeText(
-//                    getApplicationContext(),
-//                    R.string.empty_not_saved,
-//                    Toast.LENGTH_LONG).show();
-//        }
-//    }
-
     public void onClickCalled(String id) {
         // Log.i("Info", "onClickCalled: " + id);
-        Intent intent = new Intent(MainActivity.this, ResultListActivity.class);
-        intent.putExtra("trialid", id);
-        startActivity(intent);
+        if(canConnect()) {
+            Intent intent = new Intent(MainActivity.this, ResultListActivity.class);
+            intent.putExtra("trialid", id);
+            startActivity(intent);
+        } else {
+            showDialog();
+        }
     }
 
     private ArrayList<HashMap<String, String>> getTrialList(String json) throws JSONException {
@@ -143,5 +148,11 @@ public class MainActivity extends AppCompatActivity {
             theTrialList.add(theTrialHash);
         }
         return theTrialList;
+    }
+
+    protected boolean canConnect() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
