@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addTrialsToDb(String response) {
-        Log.i("Info", "addTrialsToDb: " + response);
+       // Log.i("Info", "addTrialsToDb: " + response);
 
         try {
             theTrialList = getTrialList(response);
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     public void onClickCalled(String id) {
-        Log.i("Info", "onClickCalled: " + id);
+        // Log.i("Info", "onClickCalled: " + id);
         Intent intent = new Intent(MainActivity.this, ResultListActivity.class);
         intent.putExtra("trialid", id);
         startActivity(intent);
