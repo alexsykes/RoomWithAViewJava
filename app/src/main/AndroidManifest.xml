@@ -14,6 +14,7 @@
         android:theme="@style/Theme.TrialMonsterRoom">
         <activity
             android:name="com.alexsykes.trialmonsterclient.ResultListActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false"
             android:parentActivityName="com.alexsykes.trialmonsterclient.MainActivity" />
         <activity
