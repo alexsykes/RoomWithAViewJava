@@ -9,7 +9,7 @@ android {
         applicationId "com.alexsykes.trialmonsterclient"
         minSdk 21
         targetSdk 31
-        versionCode 7
+        versionCode 8
         versionName "Ariel Leader"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
