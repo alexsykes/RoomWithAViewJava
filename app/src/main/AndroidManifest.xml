@@ -19,7 +19,6 @@
             android:parentActivityName="com.alexsykes.trialmonsterclient.MainActivity" />
         <activity
             android:name="com.alexsykes.trialmonsterclient.MainActivity"
-            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

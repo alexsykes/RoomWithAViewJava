@@ -3,6 +3,7 @@ package com.alexsykes.trialmonsterclient;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         canConnect = canConnect();
         if(canConnect) {
             getTrialsList();
@@ -92,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addTrialsToDb(String response) {
-       // Log.i("Info", "addTrialsToDb: " + response);
-
         try {
             theTrialList = getTrialList(response);
 
@@ -109,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
             int id = Integer.valueOf(theTrialHash.get("id"));
             String location = theTrialHash.get("location");
 
-
+            // Instantiate and insert Trial into database
             Trial trial = new Trial(id, name, club, date, location);
             trialViewModel.insert(trial);
         }
     }
 
     public void onClickCalled(String id) {
-        // Log.i("Info", "onClickCalled: " + id);
+        // Check for connectivity
         if(canConnect()) {
             Intent intent = new Intent(MainActivity.this, ResultListActivity.class);
             intent.putExtra("trialid", id);
@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayList<HashMap<String, String>> getTrialList(String json) throws JSONException {
-
         theTrialList = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(json);
 

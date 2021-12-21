@@ -107,7 +107,7 @@ public class ResultListPortraitAdapter extends RecyclerView.Adapter<ResultListPo
             theClass = "";
         }
 
-        resultViewHolder.detailRow.setVisibility(View.GONE);
+        resultViewHolder.detailRow.setVisibility(Integer.valueOf(theResult.get("visibility")));
         resultViewHolder.positionTextView.setText(theResult.get("position"));
         resultViewHolder.riderTextView.setText(theResult.get("rider"));
         resultViewHolder.nameTextView.setText(theResult.get("name"));
