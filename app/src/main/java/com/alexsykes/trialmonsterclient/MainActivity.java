@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     // Continue with delete operation
-                    dialog.cancel();;
+                    dialog.cancel();
                 }
             })
             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        //  textView.setText("Response is: "+ response.substring(0,500));
                         addTrialsToDb(response);
                     }
                 }, new Response.ErrorListener() {

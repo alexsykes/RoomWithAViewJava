@@ -37,7 +37,6 @@ public class ResultListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_list);
-        // this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         Log.i(TAG, "onCreate: ");
         trialid = getIntent().getExtras().getString("trialid");
         getJSONDataset(BASE_URL + "getTrialResultJSONdata.php?id=" + trialid);
@@ -179,8 +178,6 @@ public class ResultListActivity extends AppCompatActivity {
             ResultListAdapter adapter = new ResultListAdapter(theResults);
             rv.setAdapter(adapter);
         }
-
-
     }
 
     private ArrayList<HashMap<String, String>> getResultList(String json) throws JSONException {
