@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +22,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_TRIAL_ACTIVITY_REQUEST_CODE = 1;
     ArrayList<HashMap<String, String>> theTrialList;
     boolean canConnect;
+    BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             showDialog();
         }
+
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final TrialListAdapter adapter = new TrialListAdapter(new TrialListAdapter.TrialDiff());
         recyclerView.setAdapter(adapter);
@@ -52,16 +59,37 @@ public class MainActivity extends AppCompatActivity {
         trialViewModel = new ViewModelProvider(this).get(TrialViewModel.class);
         // Update the cached copy of the words in the adapter.
         trialViewModel.getAllTrials().observe(this, adapter::submitList);
+
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_show_future:
+                        goFuture();
+                        return true;
+                }
+
+                return false;
+            }
+        });
     }
+
+    private void goFuture() {
+        Log.i("Info", "goFuture: ");
+        Intent intent = new Intent(MainActivity.this, FutureTrialListActivity.class);
+        startActivity(intent);
+    }
+
 
     private void showDialog() {
         new AlertDialog.Builder(this)
-            .setCancelable(true)
-            .setTitle("No Connection")
-            .setMessage("TrialMonster needs an internet connection to work")
-            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // Continue with delete operation
+                .setCancelable(true)
+                .setTitle("No Connection")
+                .setMessage("TrialMonster needs an internet connection to work")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
                     dialog.cancel();
                 }
             })
