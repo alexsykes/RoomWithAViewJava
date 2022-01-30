@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:contentDescription="@string/list_of_trials_coming_up"
     tools:context=".FutureTrialListActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
         android:id="@+id/rv"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:contentDescription="@string/list_of_trials_coming_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

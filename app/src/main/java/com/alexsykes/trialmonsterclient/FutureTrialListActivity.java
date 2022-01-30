@@ -61,7 +61,7 @@ public class FutureTrialListActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("Info", "Response: " + response);
+                      //  Log.i("Info", "Response: " + response);
                         try {
                             theTrialList = getTrialList(response);
                             rv = findViewById(R.id.rv);
