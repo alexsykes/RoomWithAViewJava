@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/layout-land/result_list_item.xml" value="0.1546875" />
         <entry key="app/src/main/res/layout-land/trial_item.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout-land/trial_row.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/activity_future_trial_list.xml" value="0.3102310231023102" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_new_trial.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_new_word.xml" value="0.125" />

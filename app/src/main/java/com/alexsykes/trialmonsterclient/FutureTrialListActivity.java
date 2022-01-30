@@ -9,6 +9,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,6 +28,8 @@ import java.util.HashMap;
 public class FutureTrialListActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> theTrialList;
     boolean canConnect;
+    RecyclerView rv;
+    LinearLayoutManager llm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,13 @@ public class FutureTrialListActivity extends AppCompatActivity {
         } else {
             showDialog();
         }
+
+        RecyclerView recyclerView = findViewById(R.id.rv);
+    }
+
+    private void initialiseAdapter() {
+        FutureTrialListAdapter adapter = new FutureTrialListAdapter(theTrialList);
+        rv.setAdapter(adapter);
     }
 
     private void getTrialsList() {
@@ -53,6 +64,11 @@ public class FutureTrialListActivity extends AppCompatActivity {
                         Log.i("Info", "Response: " + response);
                         try {
                             theTrialList = getTrialList(response);
+                            rv = findViewById(R.id.rv);
+                            llm = new LinearLayoutManager(rv.getContext());
+                            rv.setLayoutManager(llm);
+                            rv.setHasFixedSize(true);
+                            initialiseAdapter();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
