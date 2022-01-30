@@ -109,7 +109,7 @@ public class FutureTrialListAdapter extends RecyclerView.Adapter<FutureTrialList
                 public void onClick(View v) {
                     String id = theTrial.get("id");
                     Context context = v.getContext();
-                    //      ((FutureTrialListActivity) context).onClickCalled(id);
+                    ((FutureTrialListActivity) context).onClickCalled(id);
                 }
             });
         }

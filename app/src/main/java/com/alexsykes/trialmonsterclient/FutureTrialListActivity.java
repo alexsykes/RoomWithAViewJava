@@ -2,6 +2,7 @@ package com.alexsykes.trialmonsterclient;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -131,5 +132,11 @@ public class FutureTrialListActivity extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    public void onClickCalled(String id) {
+        Intent intent = new Intent(this, FutureTrialDetailActivity.class);
+        intent.putExtra("trialid", id);
+        startActivity(intent);
     }
 }
