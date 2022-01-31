@@ -7,22 +7,39 @@
     android:orientation="vertical"
     tools:context=".FutureTrialDetailActivity">
 
-    <TextView
-        android:padding="@dimen/small_padding"
-        android:id="@+id/introTextView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        tools:context="com.alexsykes.trialmonsterclient.FutureTrialDetailActivity" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:padding="@dimen/small_padding"
-        android:id="@+id/followingTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/introTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/small_padding"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="10dp" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                tools:context="com.alexsykes.trialmonsterclient.FutureTrialDetailActivity"
+                tools:layout="@layout/activity_future_trial_detail" />
+
+            <TextView
+                android:id="@+id/followingTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/small_padding"
+                android:textColor="@color/colorOnPrimary" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
