@@ -134,11 +134,12 @@ public class FutureTrialListActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void onClickCalled(String id, String lat, String lon) {
+    public void onClickCalled(String id, String lat, String lon, String venue_name) {
         Intent intent = new Intent(this, FutureTrialDetailActivity.class);
         intent.putExtra("trialid", id);
         intent.putExtra("lat", Double.valueOf(lat));
         intent.putExtra("lon", Double.valueOf(lon));
+        intent.putExtra("venue_name", venue_name);
         startActivity(intent);
     }
 }

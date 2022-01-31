@@ -110,8 +110,9 @@ public class FutureTrialListAdapter extends RecyclerView.Adapter<FutureTrialList
                     String id = theTrial.get("id");
                     String lat = theTrial.get("lat");
                     String lon = theTrial.get("lon");
+                    String venue_name = theTrial.get("venue_name");
                     Context context = v.getContext();
-                    ((FutureTrialListActivity) context).onClickCalled(id,lat,lon);
+                    ((FutureTrialListActivity) context).onClickCalled(id, lat, lon, venue_name);
                 }
             });
         }
