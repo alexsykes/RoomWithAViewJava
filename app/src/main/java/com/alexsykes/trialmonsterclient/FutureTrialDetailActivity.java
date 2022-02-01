@@ -16,7 +16,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,9 +25,7 @@ public class FutureTrialDetailActivity extends AppCompatActivity
         implements OnMapReadyCallback {
     private String trialid, venue_name;
     private double lat, lon;
-    TextView introTextView;
     TextView followingTextView;
-    MapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +36,9 @@ public class FutureTrialDetailActivity extends AppCompatActivity
         lon = getIntent().getDoubleExtra("lon", 0);
         venue_name = getIntent().getExtras().getString("venue_name");
 
+        followingTextView = findViewById(R.id.followingTextView);
 
-        introTextView = findViewById(R.id.introTextView);
-        // followingTextView = findViewById(R.id.followingTextView);
-
-        String stringWithPlaceHolder = "test {0} String  {1} with placeholders  {2} {3}";
-        String formattedString = java.text.MessageFormat.format(stringWithPlaceHolder, "place-holder-1", "place-holder-2", "place-holder-3", "place-holder-4");
-
-        // introTextView.setText(venue_name);
+        // Get trial details, then display
         getTrialDetails(trialid);
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
@@ -65,8 +57,9 @@ public class FutureTrialDetailActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //  Log.i("Info", "Response: " + response);
-                        introTextView.setText(Html.fromHtml(response));
+                        Log.i("Info", "Response: " + response);
+                        followingTextView.setText(Html.fromHtml(response));
+                        //  followingTextView.loadD
                     }
                 }, new Response.ErrorListener() {
             @Override
