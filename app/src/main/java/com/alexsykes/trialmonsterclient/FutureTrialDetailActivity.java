@@ -1,6 +1,7 @@
 package com.alexsykes.trialmonsterclient;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -40,8 +41,12 @@ public class FutureTrialDetailActivity extends AppCompatActivity
 
 
         introTextView = findViewById(R.id.introTextView);
-        followingTextView = findViewById(R.id.followingTextView);
+        // followingTextView = findViewById(R.id.followingTextView);
 
+        String stringWithPlaceHolder = "test {0} String  {1} with placeholders  {2} {3}";
+        String formattedString = java.text.MessageFormat.format(stringWithPlaceHolder, "place-holder-1", "place-holder-2", "place-holder-3", "place-holder-4");
+
+        // introTextView.setText(venue_name);
         getTrialDetails(trialid);
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
@@ -53,25 +58,15 @@ public class FutureTrialDetailActivity extends AppCompatActivity
     private void getTrialDetails(String trialid) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplication().getBaseContext());
-        String url = "https://android.trialmonster.uk/getFutureTrialDetailAndroid.php?id=" + trialid;
+        String url = "https://android.trialmonster.uk/getIntroText.php?id=" + trialid;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("Info", "Response: " + response);
-//                        try {
-//                            theTrialList = getTrialList(response);
-//                            rv = findViewById(R.id.rv);
-//                            llm = new LinearLayoutManager(rv.getContext());
-//                            rv.setLayoutManager(llm);
-//                            rv.setHasFixedSize(true);
-//                            initialiseAdapter();
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
+                        //  Log.i("Info", "Response: " + response);
+                        introTextView.setText(Html.fromHtml(response));
                     }
                 }, new Response.ErrorListener() {
             @Override
