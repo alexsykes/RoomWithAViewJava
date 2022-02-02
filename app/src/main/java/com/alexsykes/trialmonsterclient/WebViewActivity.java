@@ -21,6 +21,7 @@ public class WebViewActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
 
         webView.loadUrl("https://trialmonster.uk/index.php?option=com_entryman&view=comingup&id=" + trialid);
+        //webView.loadData(String.valueOf(R.string.reg_template),"text/html","utf8");
         //  webView.loadUrl("https://android.trialmonster.uk/getWebPage.php?id="+trialid);
         //  webView.loadUrl( "https://android.trialmonster.uk/getIntroText.php?id=" + trialid );
 

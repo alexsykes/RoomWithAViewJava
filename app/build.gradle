@@ -12,7 +12,6 @@ android {
         targetSdk 31
         versionCode 9
         versionName "Ariel Leader"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

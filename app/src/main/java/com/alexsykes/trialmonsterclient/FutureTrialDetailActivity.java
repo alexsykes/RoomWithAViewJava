@@ -1,7 +1,9 @@
 package com.alexsykes.trialmonsterclient;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -58,7 +60,16 @@ public class FutureTrialDetailActivity extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         Log.i("Info", "Response: " + response);
-                        followingTextView.setText(Html.fromHtml(response));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                           // followingTextView.setText(Html.fromHtml(response, Html.FROM_HTML_MODE_LEGACY));
+
+
+                            Spanned sp = Html.fromHtml( getString(R.string.reg_template));
+                            //tv.setText(sp);
+
+
+                            followingTextView.setText(sp);
+                        }
                         //  followingTextView.loadD
                     }
                 }, new Response.ErrorListener() {
