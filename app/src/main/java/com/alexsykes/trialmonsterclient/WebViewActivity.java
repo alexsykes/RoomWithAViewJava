@@ -4,26 +4,50 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class WebViewActivity extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-    private String trialid;
+public class WebViewActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private String trialid, venue_name;
+    private double lat, lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         trialid = getIntent().getExtras().getString("trialid");
+        lat = getIntent().getDoubleExtra("lat", 0);
+        lon = getIntent().getDoubleExtra("lon", 0);
+        venue_name = getIntent().getExtras().getString("venue_name");
         setContentView(R.layout.activity_web_view);
         WebView webView = findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        webView.loadUrl("https://ios.trialmonster.uk/getIntroText.php?id=" + trialid);
-        //webView.loadData(String.valueOf(R.string.reg_template),"text/html","utf8");
-        //  webView.loadUrl("https://android.trialmonster.uk/getWebPage.php?id="+trialid);
-        //  webView.loadUrl( "https://android.trialmonster.uk/getIntroText.php?id=" + trialid );
+
+        webView.loadUrl("https://android.trialmonster.uk/getFutureTrialHTML.php?id=" + trialid);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapView);
+        mapFragment.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        LatLng location = new LatLng(lat, lon);
+        googleMap.addMarker(new MarkerOptions()
+                .title(venue_name)
+                .position(location));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
 
     }
 }
