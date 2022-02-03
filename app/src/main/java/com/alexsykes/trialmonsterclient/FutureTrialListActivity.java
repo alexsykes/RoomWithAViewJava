@@ -135,7 +135,7 @@ public class FutureTrialListActivity extends AppCompatActivity {
     }
 
     public void onClickCalled(String id, String lat, String lon, String venue_name) {
-        Intent intent = new Intent(this, FutureTrialDetailActivity.class);
+        Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra("trialid", id);
         intent.putExtra("lat", Double.valueOf(lat));
         intent.putExtra("lon", Double.valueOf(lon));
