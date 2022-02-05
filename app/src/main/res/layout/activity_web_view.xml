@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="0dp"
-            tools:context="com.alexsykes.trialmonsterclient.FutureTrialDetailActivity"
+            tools:context=".WebViewActivity"
             tools:layout="@layout/activity_web_view" />
 
         <WebView
