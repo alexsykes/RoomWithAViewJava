@@ -1,5 +1,6 @@
 package com.alexsykes.trialmonsterclient;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -22,8 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_TRIAL_ACTIVITY_REQUEST_CODE = 1;
     ArrayList<HashMap<String, String>> theTrialList;
     boolean canConnect;
-    BottomNavigationView bottomNavigation;
+    // BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             showDialog();
         }
 
-
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final TrialListAdapter adapter = new TrialListAdapter(new TrialListAdapter.TrialDiff());
         recyclerView.setAdapter(adapter);
@@ -60,19 +60,23 @@ public class MainActivity extends AppCompatActivity {
         // Update the cached copy of the words in the adapter.
         trialViewModel.getAllTrials().observe(this, adapter::submitList);
 
-        bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_show_future:
-                        goFuture();
-                        return true;
-                }
+    }
 
-                return false;
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_show_future:
+                goFuture();
+                return true;
+        }
+        return false;
     }
 
     private void goFuture() {
@@ -176,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected boolean canConnect() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        @SuppressLint("MissingPermission") NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
