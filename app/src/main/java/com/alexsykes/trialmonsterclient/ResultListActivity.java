@@ -191,6 +191,7 @@ public class ResultListActivity extends AppCompatActivity {
             HashMap<String, String> theResultHash = new HashMap<>();
             name = jsonArray.getJSONObject(index).getString("name");
             // ut data from JSON
+            theResultHash.put("pos", jsonArray.getJSONObject(index).getString("pos"));
             theResultHash.put("rider", jsonArray.getJSONObject(index).getString("rider"));
             theResultHash.put("name", jsonArray.getJSONObject(index).getString("name"));
             theResultHash.put("machine", jsonArray.getJSONObject(index).getString("machine"));

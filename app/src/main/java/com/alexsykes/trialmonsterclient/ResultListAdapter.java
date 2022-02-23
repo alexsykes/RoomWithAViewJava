@@ -105,7 +105,7 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Re
             theClass = "";
         }
 
-        resultViewHolder.positionTextView.setText(theResult.get("position"));
+        resultViewHolder.positionTextView.setText(theResult.get("pos"));
         resultViewHolder.riderTextView.setText(theResult.get("rider"));
         resultViewHolder.nameTextView.setText(theResult.get("name"));
         resultViewHolder.machineTextView.setText(theResult.get("machine"));
