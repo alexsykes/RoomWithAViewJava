@@ -29,6 +29,7 @@ public class ResultListActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://android.trialmonster.uk/";
     public static int numlaps, numsections;
     ArrayList<HashMap<String, String>> theResults;
+    private int[] coursenumbers;
     RecyclerView rv;
     LinearLayoutManager llm;
     private String trialid;
@@ -39,7 +40,7 @@ public class ResultListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result_list);
         Log.i(TAG, "onCreate: ");
         trialid = getIntent().getExtras().getString("trialid");
-        getJSONDataset(BASE_URL + "getTrialResultJSONdata.php?id=" + trialid);
+        getJSONDataset(BASE_URL + "getGroupedTrialResultJSONdata.php?id=" + trialid);
     }
 
     @Override
@@ -98,15 +99,14 @@ public class ResultListActivity extends AppCompatActivity {
                     JSONObject trialDetails = theTrial.getJSONObject(0);
                     displayTrialDetails(trialDetails);
 
-                    // JSONArray courseCount = jsonArray.getJSONObject(1).getJSONArray("entry count");
+                    JSONArray courseCount = jsonArray.getJSONObject(1).getJSONArray("entry count");
                     String results = jsonArray.getJSONObject(2).getJSONArray("results").toString();
                     theResults = getResultList(results);
 
+                    coursenumbers = getCourseNumbers(courseCount);
                     // JSONArray nonStarters = jsonArray.getJSONObject(3).getJSONArray("nonstarters");
 
                     rv = findViewById(R.id.rv);
-
-
                     llm = new LinearLayoutManager(rv.getContext());
                     rv.setLayoutManager(llm);
                     rv.setHasFixedSize(true);
@@ -167,6 +167,19 @@ public class ResultListActivity extends AppCompatActivity {
         //creating asynctask object and executing it
         GetData getJSON = new GetData();
         getJSON.execute();
+    }
+
+    private int[] getCourseNumbers(JSONArray courseCount) throws JSONException {
+        int courseCounter = 0;
+        int increment = 0;
+        coursenumbers = new int[courseCount.length()];
+        for (int index = 0; index < courseCount.length(); index++) {
+
+            courseCounter += increment;
+            coursenumbers[index] = courseCounter;
+            increment = Integer.valueOf(courseCount.getJSONObject(index).getString("coursecount"));
+        }
+        return coursenumbers;
     }
 
     private void initialiseAdapter() {
