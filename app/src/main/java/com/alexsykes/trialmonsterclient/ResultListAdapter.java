@@ -93,7 +93,7 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Re
             resultViewHolder.itemView.setBackgroundColor(white);
         }
 
-        if (theResult.get("position").equals("1")) {
+        if (theResult.get("showTopRow").equals("true")) {
             resultViewHolder.topRow.setVisibility(View.VISIBLE);
 
         } else {

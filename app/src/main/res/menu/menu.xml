@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_show_future"
         android:enabled="true"
-        android:icon="@drawable/ic_calendar_48"
+        android:icon="@drawable/ic_event_48"
         android:title="@string/coming_up"
         app:showAsAction="ifRoom|withText" />
 </menu>

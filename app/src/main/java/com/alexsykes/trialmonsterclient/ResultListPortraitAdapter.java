@@ -42,8 +42,6 @@ public class ResultListPortraitAdapter extends RecyclerView.Adapter<ResultListPo
     public void onBindViewHolder(final ResultViewHolder resultViewHolder, int i) {
         theResult = theResultList.get(i);
         int numlaps = ResultListActivity.numlaps;
-        int visibility;
-        boolean showTopRow;
 
         // Pass index value to listener method
         resultViewHolder.itemView.setTag(i);
@@ -63,12 +61,11 @@ public class ResultListPortraitAdapter extends RecyclerView.Adapter<ResultListPo
                 theResultList.get(pointer).put("visibility", Integer.toString(newVisibility));
             }
         });
-        //
 
         int backgroundColor = ContextCompat.getColor(resultViewHolder.itemView.getContext(), R.color.offWhite);
         int white = ContextCompat.getColor(resultViewHolder.itemView.getContext(), R.color.colorWhite);
 
-        // Insert * character after each section
+        // Insert separator after each section
         // Create sectionsScore data string
 
         String theSectionScores, theSections, separator;
@@ -85,7 +82,6 @@ public class ResultListPortraitAdapter extends RecyclerView.Adapter<ResultListPo
             theSections = theSections + theChar;
         }
         theSections = (theSections + separator).trim();
-        // End
 
         // Format background
         if (i % 2 != 0) {
@@ -94,14 +90,14 @@ public class ResultListPortraitAdapter extends RecyclerView.Adapter<ResultListPo
             resultViewHolder.itemView.setBackgroundColor(white);
         }
 
-        if (theResult.get("position").equals("1")) {
+        if (theResult.get("showTopRow").equals("true")) {
             resultViewHolder.topRow.setVisibility(View.VISIBLE);
 
         } else {
             resultViewHolder.topRow.setVisibility(View.GONE);
         }
 
-        showTopRow = Boolean.valueOf(theResult.get("showTopRow"));
+
         String theClass = theResult.get("class");
         if (theClass.contains("Adult")) {
             theClass = "";

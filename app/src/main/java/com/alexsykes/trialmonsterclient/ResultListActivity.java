@@ -101,9 +101,21 @@ public class ResultListActivity extends AppCompatActivity {
 
                     JSONArray courseCount = jsonArray.getJSONObject(1).getJSONArray("entry count");
                     String results = jsonArray.getJSONObject(2).getJSONArray("results").toString();
+
+                    // Get ArrayList of Results
                     theResults = getResultList(results);
 
+                    // Get index list of first in each Course
                     coursenumbers = getCourseNumbers(courseCount);
+
+                    // Set showTopRow for each of these
+                    for (int index = 0; index < coursenumbers.length; index++) {
+                        int i = coursenumbers[index];
+                        HashMap<String, String> theResultHash = theResults.get(i);
+                        theResultHash.put("showTopRow", "true");
+                    }
+
+
                     // JSONArray nonStarters = jsonArray.getJSONObject(3).getJSONArray("nonstarters");
 
                     rv = findViewById(R.id.rv);
