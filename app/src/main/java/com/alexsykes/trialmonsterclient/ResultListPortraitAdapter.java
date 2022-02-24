@@ -43,6 +43,7 @@ public class ResultListPortraitAdapter extends RecyclerView.Adapter<ResultListPo
         theResult = theResultList.get(i);
         int numlaps = ResultListActivity.numlaps;
         int visibility;
+        boolean showTopRow;
 
         // Pass index value to listener method
         resultViewHolder.itemView.setTag(i);
@@ -100,6 +101,7 @@ public class ResultListPortraitAdapter extends RecyclerView.Adapter<ResultListPo
             resultViewHolder.topRow.setVisibility(View.GONE);
         }
 
+        showTopRow = Boolean.valueOf(theResult.get("showTopRow"));
         String theClass = theResult.get("class");
         if (theClass.contains("Adult")) {
             theClass = "";

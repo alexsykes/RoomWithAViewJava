@@ -25,6 +25,7 @@ public class Result {
     int dnf;
     String sectionscores;
     String scores;
+    boolean showTopRow;
 
     public Result(int trialid, int id, int number, String course, String name, String classs, String machine, String total, String cleans, String ones, String twos, String threes, String fives, String missed, int dnf, String sectionscores, String scores) {
         this.trialid = trialid;
@@ -44,5 +45,6 @@ public class Result {
         this.dnf = dnf;
         this.sectionscores = sectionscores;
         this.scores = scores;
+        this.showTopRow = false;
     }
 }
