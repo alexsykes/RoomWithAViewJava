@@ -40,7 +40,7 @@ public class FutureTrialDetailActivity extends AppCompatActivity
         followingTextView = findViewById(R.id.followingTextView);
 
         // Get trial details, then display
-        getTrialDetails(trialid);
+        // getTrialDetails(trialid);
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -51,7 +51,7 @@ public class FutureTrialDetailActivity extends AppCompatActivity
     private void getTrialDetails(String trialid) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplication().getBaseContext());
-        String url = "https://android.trialmonster.uk/getIntroText.php?id=" + trialid;
+        String url = "https://android.trialmonster.uk/getTrialDetail.php?id=" + trialid;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
