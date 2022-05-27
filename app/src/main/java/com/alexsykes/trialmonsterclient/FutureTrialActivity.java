@@ -14,7 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class WebViewActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class FutureTrialActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private String trialid, venue_name;
     private double lat, lon;
@@ -33,7 +33,8 @@ public class WebViewActivity extends AppCompatActivity implements OnMapReadyCall
         webSettings.setJavaScriptEnabled(true);
 
 
-        webView.loadUrl("https://android.trialmonster.uk/getTrialDetail.php?id=" + trialid);
+        // webView.loadUrl("https://android.trialmonster.uk/getTrialDetail.php?id=" + trialid);
+        webView.loadUrl("https://android.trialmonster.uk/getTrialDetailNew.php?id=" + trialid);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);

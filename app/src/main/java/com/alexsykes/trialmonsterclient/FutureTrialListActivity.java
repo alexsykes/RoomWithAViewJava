@@ -1,7 +1,6 @@
 package com.alexsykes.trialmonsterclient;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -124,18 +123,16 @@ public class FutureTrialListActivity extends AppCompatActivity {
                 .setCancelable(true)
                 .setTitle("No Connection")
                 .setMessage("TrialMonster needs an internet connection to work")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Continue with delete operation
-                        dialog.cancel();
-                    }
+                .setPositiveButton("OK", (dialog, which) -> {
+                    // Continue with delete operation
+                    dialog.cancel();
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
 
     public void onClickCalled(String id, String lat, String lon, String venue_name) {
-        Intent intent = new Intent(this, WebViewActivity.class);
+        Intent intent = new Intent(this, FutureTrialActivity.class);
         intent.putExtra("trialid", id);
         intent.putExtra("lat", Double.valueOf(lat));
         intent.putExtra("lon", Double.valueOf(lon));

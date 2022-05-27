@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".FutureTrialDetailActivity">
+    tools:context=".FutureTrialMapActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="0dp"
-        tools:context="com.alexsykes.trialmonsterclient.FutureTrialDetailActivity"
+        tools:context="com.alexsykes.trialmonsterclient.FutureTrialMapActivity"
         tools:layout="@layout/activity_future_trial_detail" />
 
     <ScrollView
@@ -27,7 +27,7 @@
             android:lineHeight="18dp"
             android:padding="@dimen/small_padding"
             android:textColor="@color/colorOnPrimary"
-            android:textSize="13dp" />
+            android:textSize="13sp" />
     </ScrollView>
 
 </LinearLayout>
