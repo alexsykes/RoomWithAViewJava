@@ -1,5 +1,6 @@
 package com.alexsykes.trialmonsterclient;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -14,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -58,29 +57,20 @@ public class FutureTrialListActivity extends AppCompatActivity {
 
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                      //  Log.i("Info", "Response: " + response);
-                        try {
-                            theTrialList = getTrialList(response);
-                            rv = findViewById(R.id.rv);
-                            llm = new LinearLayoutManager(rv.getContext());
-                            rv.setLayoutManager(llm);
-                            rv.setHasFixedSize(true);
-                            initialiseAdapter();
+                response -> {
+                    //  Log.i("Info", "Response: " + response);
+                    try {
+                        theTrialList = getTrialList(response);
+                        rv = findViewById(R.id.rv);
+                        llm = new LinearLayoutManager(rv.getContext());
+                        rv.setLayoutManager(llm);
+                        rv.setHasFixedSize(true);
+                        initialiseAdapter();
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("Info", "That didn't work!");
-
-            }
-        });
+                }, error -> Log.i("Info", "That didn't work!"));
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
@@ -114,7 +104,7 @@ public class FutureTrialListActivity extends AppCompatActivity {
 
     protected boolean canConnect() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        @SuppressLint("MissingPermission") NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 

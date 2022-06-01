@@ -32,7 +32,6 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-
         // webView.loadUrl("https://android.trialmonster.uk/getTrialDetail.php?id=" + trialid);
         webView.loadUrl("https://android.trialmonster.uk/getTrialDetailNew.php?id=" + trialid);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

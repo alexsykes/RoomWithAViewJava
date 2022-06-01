@@ -11,17 +11,18 @@
         <entry key="app/src/main/res/layout-land/result_list_item.xml" value="0.1546875" />
         <entry key="app/src/main/res/layout-land/trial_item.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout-land/trial_row.xml" value="0.23802083333333332" />
-        <entry key="app/src/main/res/layout/activity_future_trial_detail.xml" value="0.305111821086262" />
+        <entry key="app/src/main/res/layout/activity_future_trial_detail.xml" value="0.75" />
         <entry key="app/src/main/res/layout/activity_future_trial_list.xml" value="0.4638888888888889" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_new_trial.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_new_word.xml" value="0.125" />
-        <entry key="app/src/main/res/layout/activity_result_list.xml" value="0.36973478939157567" />
+        <entry key="app/src/main/res/layout/activity_result_list.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_web_view.xml" value="0.24151696606786427" />
         <entry key="app/src/main/res/layout/recyclerview_item.xml" value="0.125" />
         <entry key="app/src/main/res/layout/result_list_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/trial_item.xml" value="0.2890995260663507" />
         <entry key="app/src/main/res/layout/trial_row.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/xml/data_extraction_rules.xml" value="0.32135416666666666" />
       </map>
     </option>
   </component>
