@@ -1,6 +1,11 @@
 package com.alexsykes.trialmonsterclient;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -38,6 +43,30 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.entry_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_make_entry:
+                goEntry();
+                return true;
+        }
+        return false;
+    }
+
+    private void goEntry() {
+
+        Log.i("Info", "goEntry: ");
+        Intent intent = new Intent(FutureTrialActivity.this, EntryActivity.class);
+        startActivity(intent);
     }
 
     @Override
