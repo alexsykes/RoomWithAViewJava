@@ -69,6 +69,8 @@ public class FutureTrialListAdapter extends RecyclerView.Adapter<FutureTrialList
         holder.venueTextView.setText(theTrial.get("venue_name"));
         holder.dateTextView.setText(theDate);
         holder.bind(theTrial, listener);
+        holder.classlist = theTrial.get("classlist");
+        holder.courselist = theTrial.get("courselist");
 
 
         if (i % 2 != 0) {
@@ -93,6 +95,7 @@ public class FutureTrialListAdapter extends RecyclerView.Adapter<FutureTrialList
         TextView dateTextView;
         TextView nameTextView;
         TextView venueTextView;
+        String classlist, courselist;
 
         public FutureTrialViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,8 +114,10 @@ public class FutureTrialListAdapter extends RecyclerView.Adapter<FutureTrialList
                     String lat = theTrial.get("lat");
                     String lon = theTrial.get("lon");
                     String venue_name = theTrial.get("venue_name");
+                    String classlist = theTrial.get("classlist");
+                    String courselist = theTrial.get("courselist");
                     Context context = v.getContext();
-                    ((FutureTrialListActivity) context).onClickCalled(id, lat, lon, venue_name);
+                    ((FutureTrialListActivity) context).onClickCalled(id, lat, lon, venue_name, classlist, courselist);
                 }
             });
         }

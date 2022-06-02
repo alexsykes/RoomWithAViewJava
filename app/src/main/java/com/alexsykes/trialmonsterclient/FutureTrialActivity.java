@@ -2,7 +2,6 @@ package com.alexsykes.trialmonsterclient;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class FutureTrialActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private String trialid, venue_name;
+    private String trialid, venue_name, courses, classes;
     private double lat, lon;
 
     @Override
@@ -31,6 +30,8 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
         trialid = getIntent().getExtras().getString("trialid");
         lat = getIntent().getDoubleExtra("lat", 0);
         lon = getIntent().getDoubleExtra("lon", 0);
+        courses = getIntent().getStringExtra("courselist");
+        classes = getIntent().getStringExtra("classlist");
         venue_name = getIntent().getExtras().getString("venue_name");
         setContentView(R.layout.activity_web_view);
         WebView webView = findViewById(R.id.webView);
@@ -63,9 +64,9 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void goEntry() {
-
-        Log.i("Info", "goEntry: ");
         Intent intent = new Intent(FutureTrialActivity.this, EntryActivity.class);
+        intent.putExtra("courses", courses);
+        intent.putExtra("classes", classes);
         startActivity(intent);
     }
 

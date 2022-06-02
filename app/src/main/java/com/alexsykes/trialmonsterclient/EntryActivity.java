@@ -11,6 +11,8 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class EntryActivity extends AppCompatActivity {
@@ -19,6 +21,9 @@ public class EntryActivity extends AppCompatActivity {
     RadioGroup modeGroup;
     RadioButton myselfRadioButton, otherRadioButton;
     int mode;
+    MaterialButtonToggleGroup courseGroup, classGroup;
+    String courses, classes;
+    String[] courselist, classlist;
 
     String firstname, lastname, enteredBy, acu;
     SharedPreferences defaults;
@@ -28,6 +33,10 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+        courses = getIntent().getStringExtra("courses");
+        classes = getIntent().getStringExtra("classes");
+        courselist = courses.split(",");
+        classlist = classes.split(",");
         defaults = this.getPreferences(Context.MODE_PRIVATE);
         setUpUI();
         setupInitialValues();
@@ -79,9 +88,42 @@ public class EntryActivity extends AppCompatActivity {
         modeGroup = findViewById(R.id.modeGroup);
         myselfRadioButton = findViewById(R.id.myselfRadioButton);
         otherRadioButton = findViewById(R.id.otherRadioButton);
+
+        classGroup = findViewById(R.id.classGroup);
+        classGroup.setSelectionRequired(true);
+        classGroup.removeAllViews();
+
+        courseGroup = findViewById(R.id.courseGroup);
+        courseGroup.setSelectionRequired(true);
+        courseGroup.removeAllViews();
+
+        MaterialButton button;
+        int style = R.attr.materialButtonOutlinedStyle;
+        // style = R.style.CustomButtonStyle;
+        for (int i = 0; i < courselist.length; i++) {
+            button = new MaterialButton(this, null, style);
+            button.setText(courselist[i]);
+            courseGroup.addView(button);
+        }
+        // style = R.style.CustomButtonStyle;
+        for (int i = 0; i < classlist.length; i++) {
+            button = new MaterialButton(this, null, style);
+            button.setText(classlist[i]);
+            classGroup.addView(button);
+        }
+
+
     }
 
     private void addListeners() {
+        enteredByTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                enteredByTextInput.getEditText().setText("OK");
+                Log.i("Info", "onFocusChange: ");
+            }
+        });
+
         modeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

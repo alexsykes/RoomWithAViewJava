@@ -18,5 +18,6 @@
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">
             @mipmap/ic_launcher_round
         </item>
+        <item name="myButtonStyle">@style/CustomButtonStyle</item>
     </style>
 </resources>

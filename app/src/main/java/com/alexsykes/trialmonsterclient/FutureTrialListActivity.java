@@ -29,6 +29,7 @@ public class FutureTrialListActivity extends AppCompatActivity {
     boolean canConnect;
     RecyclerView rv;
     LinearLayoutManager llm;
+    private String classlist, courselist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,6 @@ public class FutureTrialListActivity extends AppCompatActivity {
         } else {
             showDialog();
         }
-
         RecyclerView recyclerView = findViewById(R.id.rv);
     }
 
@@ -89,6 +89,8 @@ public class FutureTrialListActivity extends AppCompatActivity {
             String lat = jsonArray.getJSONObject(index).getString("lat");
             String lon = jsonArray.getJSONObject(index).getString("lon");
             String venue_name = jsonArray.getJSONObject(index).getString("venue_name");
+            String classlist = jsonArray.getJSONObject(index).getString("classlist");
+            String courselist = jsonArray.getJSONObject(index).getString("courselist");
 
             theTrialHash.put("id", id);
             theTrialHash.put("name", name);
@@ -97,6 +99,8 @@ public class FutureTrialListActivity extends AppCompatActivity {
             theTrialHash.put("lat", lat);
             theTrialHash.put("lon", lon);
             theTrialHash.put("venue_name", venue_name);
+            theTrialHash.put("classlist", classlist);
+            theTrialHash.put("courselist", courselist);
             theTrialList.add(theTrialHash);
         }
         return theTrialList;
@@ -121,12 +125,14 @@ public class FutureTrialListActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void onClickCalled(String id, String lat, String lon, String venue_name) {
+    public void onClickCalled(String id, String lat, String lon, String venue_name, String classlist, String courselist) {
         Intent intent = new Intent(this, FutureTrialActivity.class);
         intent.putExtra("trialid", id);
         intent.putExtra("lat", Double.valueOf(lat));
         intent.putExtra("lon", Double.valueOf(lon));
         intent.putExtra("venue_name", venue_name);
+        intent.putExtra("classlist", classlist);
+        intent.putExtra("courselist", courselist);
         startActivity(intent);
     }
 }

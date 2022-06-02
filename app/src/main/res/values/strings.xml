@@ -55,4 +55,10 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="entered_by">Entered by</string>
     <string name="acu_registration">ACU Registration</string>
+    <string name="button_label_private">Private</string>
+    <string name="button_label_team">Team</string>
+    <string name="button_label_everyone">Everyone</string>
+    <string name="button_label_custom">Nobody</string>
+    <string name="adult">Adult</string>
+    <string name="youth">Youth</string>
 </resources>
