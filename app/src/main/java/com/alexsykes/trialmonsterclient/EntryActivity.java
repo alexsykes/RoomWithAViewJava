@@ -21,8 +21,9 @@ public class EntryActivity extends AppCompatActivity {
     RadioGroup modeGroup;
     RadioButton myselfRadioButton, otherRadioButton;
     int mode;
+    int selectedCourseID, selectedClassID;
     MaterialButtonToggleGroup courseGroup, classGroup;
-    String courses, classes;
+    String courses, classes, courseSelected, classSelected;
     String[] courselist, classlist;
 
     String firstname, lastname, enteredBy, acu;
@@ -40,6 +41,10 @@ public class EntryActivity extends AppCompatActivity {
         defaults = this.getPreferences(Context.MODE_PRIVATE);
         setUpUI();
         setupInitialValues();
+        MaterialButton classSelectedButton = findViewById(selectedClassID);
+        MaterialButton courseSelectedButton = findViewById(selectedCourseID);
+//        classSelectedButton.setChecked(true);
+//        courseSelectedButton.setChecked(true);
         addListeners();
     }
 
@@ -76,6 +81,15 @@ public class EntryActivity extends AppCompatActivity {
         emailTextInput.getEditText().setText(defaults.getString("email", ""));
         enteredByTextInput.getEditText().setText(defaults.getString("enteredBy", ""));
         acuTextInput.getEditText().setText(defaults.getString("acu", ""));
+        courseSelected = defaults.getString("courseSelected", "");
+        classSelected = defaults.getString("classSelected", "");
+        selectedClassID = defaults.getInt("selectedClassID", -1);
+        selectedCourseID = defaults.getInt("selectedCourseID", -1);
+
+        //       MaterialButton classActive = findViewById(classSelected);
+        //       classActive.setChecked(true);
+        //       MaterialButton courseActive = findViewById(courseSelected);
+        //       courseActive.setChecked(true);
     }
 
     private void setUpUI() {
@@ -102,17 +116,41 @@ public class EntryActivity extends AppCompatActivity {
         // style = R.style.CustomButtonStyle;
         for (int i = 0; i < courselist.length; i++) {
             button = new MaterialButton(this, null, style);
+            button.setTag(i);
             button.setText(courselist[i]);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editor = defaults.edit();
+                    String selected = String.valueOf(v.getTag());
+                    int id = v.getId();
+                    editor.putString("selectedCourse", selected);
+                    editor.putInt("selectedCourseID", id);
+                    editor.apply();
+                    //   Log.i("Info", "Course: " + selected);
+                }
+            });
             courseGroup.addView(button);
         }
         // style = R.style.CustomButtonStyle;
         for (int i = 0; i < classlist.length; i++) {
             button = new MaterialButton(this, null, style);
+            button.setTag(i);
             button.setText(classlist[i]);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editor = defaults.edit();
+                    String selected = String.valueOf(v.getTag());
+                    int id = v.getId();
+                    editor.putString("selectedClass", selected);
+                    editor.putInt("selectedClassID", id);
+                    editor.apply();
+                    //   Log.i("Info", "Class: " + selected);
+                }
+            });
             classGroup.addView(button);
         }
-
-
     }
 
     private void addListeners() {
@@ -132,12 +170,10 @@ public class EntryActivity extends AppCompatActivity {
                     case -1:
                         break;
                     case R.id.myselfRadioButton:
-                        Log.i("Info", "onCheckedChanged: " + checkedId);
                         enteredByTextInput.setVisibility(View.GONE);
                         editor.putInt("mode", 0);
                         break;
                     case R.id.otherRadioButton:
-                        Log.i("Info", "onCheckedChanged: " + checkedId);
                         enteredByTextInput.setVisibility(View.VISIBLE);
                         editor.putInt("mode", 1);
                         break;
