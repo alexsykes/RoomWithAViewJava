@@ -17,6 +17,11 @@
         android:theme="@style/Theme.TrialMonsterRoom"
         tools:targetApi="s">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".FutureTrialMapActivity" />
+        <activity
             android:name=".EntryActivity"
             android:exported="false"
             android:parentActivityName=".FutureTrialMapActivity" />
