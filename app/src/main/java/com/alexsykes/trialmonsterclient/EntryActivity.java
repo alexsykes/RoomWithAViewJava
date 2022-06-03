@@ -34,6 +34,7 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+        // Get course / class data from intent
         courses = getIntent().getStringExtra("courses");
         classes = getIntent().getStringExtra("classes");
         courselist = courses.split(",");
