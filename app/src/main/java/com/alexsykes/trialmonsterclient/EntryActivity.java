@@ -1,19 +1,39 @@
 
 package com.alexsykes.trialmonsterclient;
 
+// https://www.tutlane.com/tutorial/android/android-datepicker-with-examples
+// https://stackoverflow.com/questions/57212800/how-to-return-the-results-form-a-datepickerfragment-to-a-fragment
+
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Calendar;
+import java.util.Date;
+
+
+/* TODO Add listeners for field changes
+ *   Sort out course / class initialisation from defaults
+ *   Tidy-up datepicker fragment
+ *
+ *
+ *
+ * */
 
 public class EntryActivity extends AppCompatActivity {
     TextInputLayout firstNameTextInput, lastnameTextInput, emailTextInput, enteredByTextInput, acuTextInput;
@@ -23,6 +43,8 @@ public class EntryActivity extends AppCompatActivity {
     int mode;
     int selectedCourseID, selectedClassID;
     MaterialButtonToggleGroup courseGroup, classGroup;
+    Button dateButton;
+    Date dob;
     String courses, classes, courseSelected, classSelected;
     String[] courselist, classlist;
 
@@ -47,6 +69,22 @@ public class EntryActivity extends AppCompatActivity {
 //        classSelectedButton.setChecked(true);
 //        courseSelectedButton.setChecked(true);
         addListeners();
+    }
+
+    public void updateDoB(int year, int month, int day) {
+        Log.i("Info", "updateDoB: ");
+        dateButton = findViewById(R.id.dateButton);
+
+        String month_string = Integer.toString(month + 1);
+        String day_string = Integer.toString(day);
+        String year_string = Integer.toString(year);
+        String date = (day_string + "-" + month_string + "-" + year_string);
+        editor = defaults.edit();
+        editor.putString("dob", year_string + "-" + month_string + "-" + day_string);
+        editor.apply();
+
+        //    Date date1=new SimpleDateFormat("dd-MM-yyyy").parse(date);
+        dateButton.setText(date);
     }
 
     @Override
@@ -80,7 +118,6 @@ public class EntryActivity extends AppCompatActivity {
         firstNameTextInput.getEditText().setText(defaults.getString("firstname", ""));
         lastnameTextInput.getEditText().setText(defaults.getString("lastname", ""));
         emailTextInput.getEditText().setText(defaults.getString("email", ""));
-        enteredByTextInput.getEditText().setText(defaults.getString("enteredBy", ""));
         acuTextInput.getEditText().setText(defaults.getString("acu", ""));
         courseSelected = defaults.getString("courseSelected", "");
         classSelected = defaults.getString("classSelected", "");
@@ -155,13 +192,13 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void addListeners() {
-        enteredByTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+/*        enteredByTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                enteredByTextInput.getEditText().setText("OK");
+                //enteredByTextInput.getEditText().setText("OK");
                 Log.i("Info", "onFocusChange: ");
             }
-        });
+        });*/
 
         modeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -184,5 +221,43 @@ public class EntryActivity extends AppCompatActivity {
                 editor.apply();
             }
         });
+    }
+
+    public void showDatePickerDialog(View view) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            int year, month, day;
+            final Calendar c = Calendar.getInstance();
+            SharedPreferences defaults = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String date = defaults.getString("dob", "");
+            if (date == "") {
+                year = c.get(Calendar.YEAR);
+                month = c.get(Calendar.MONTH);
+                day = c.get(Calendar.DAY_OF_MONTH);
+            } else {
+                String[] dateBits = date.split("-");
+                year = Integer.valueOf(dateBits[0]);
+                month = Integer.valueOf(dateBits[1]) - 1;
+                day = Integer.valueOf(dateBits[2]);
+            }
+
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+            ((EntryActivity) getActivity()).updateDoB(year, month, day);
+        }
+
     }
 }

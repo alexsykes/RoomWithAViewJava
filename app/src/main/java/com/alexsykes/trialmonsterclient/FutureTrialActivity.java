@@ -45,7 +45,6 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
         mapFragment.getMapAsync(this);
 
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -59,6 +58,8 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
             case R.id.action_make_entry:
                 goEntry();
                 return true;
+            default:
+
         }
         return false;
     }
