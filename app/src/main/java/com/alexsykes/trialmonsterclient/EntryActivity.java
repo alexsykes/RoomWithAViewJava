@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-/* TODO Setup type buttons
+/* TODO
  *   Tidy-up datepicker fragment
  *
  *
@@ -40,7 +40,7 @@ public class EntryActivity extends AppCompatActivity {
     RadioGroup modeGroup;
     RadioButton myselfRadioButton, otherRadioButton;
     int mode;
-    int selectedCourse, selectedClass;
+    int selectedCourse, selectedClass, selectedType;
     boolean isYouth;
     MaterialButtonToggleGroup courseGroup, classGroup, typeGroup;
     Button dateButton;
@@ -126,29 +126,7 @@ public class EntryActivity extends AppCompatActivity {
 
         selectedClass = defaults.getInt("selectedClass", -1);
         selectedCourse = defaults.getInt("selectedCourse", -1);
-
-        for (int i = 0; i < courselist.length; i++) {
-            MaterialButton button = new MaterialButton(this, null, style);
-            button.setTag(i);
-            button.setText(courselist[i]);
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editor = defaults.edit();
-                    courseSelected = String.valueOf(button.getText());
-                    String selected = String.valueOf(v.getTag());
-
-                    editor.putString("courseSelected", courseSelected);
-                    editor.putInt("selectedCourse", Integer.valueOf(selected));
-                    editor.apply();
-                }
-            });
-            courseGroup.addView(button);
-        }
-        if (selectedCourse > -1) {
-            courseGroup.check(courseGroup.getChildAt(selectedCourse).getId());
-        }
+        selectedType = defaults.getInt("selectedType", -1);
 
         for (int i = 0; i < classlist.length; i++) {
             MaterialButton button = new MaterialButton(this, null, style);
@@ -174,7 +152,7 @@ public class EntryActivity extends AppCompatActivity {
                     }
 
                     editor.putString("classSelected", classSelected);
-                    editor.putInt("selectedClass", Integer.valueOf(selected));
+                    editor.putInt("selectedClass", Integer.parseInt(selected));
                     editor.putBoolean("isYouth", isYouth);
                     editor.apply();
                 }
@@ -184,6 +162,30 @@ public class EntryActivity extends AppCompatActivity {
         if (selectedClass > -1) {
             classGroup.check(classGroup.getChildAt(selectedClass).getId());
         }
+
+        for (int i = 0; i < courselist.length; i++) {
+            MaterialButton button = new MaterialButton(this, null, style);
+            button.setTag(i);
+            button.setText(courselist[i]);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editor = defaults.edit();
+                    courseSelected = String.valueOf(button.getText());
+                    String selected = String.valueOf(v.getTag());
+
+                    editor.putString("courseSelected", courseSelected);
+                    editor.putInt("selectedCourse", Integer.parseInt(selected));
+                    editor.apply();
+                }
+            });
+            courseGroup.addView(button);
+        }
+        if (selectedCourse > -1) {
+            courseGroup.check(courseGroup.getChildAt(selectedCourse).getId());
+        }
+
         for (int i = 0; i < types.length; i++) {
             MaterialButton button = new MaterialButton(this, null, style);
             button.setTag(i);
@@ -195,17 +197,15 @@ public class EntryActivity extends AppCompatActivity {
                     typeSelected = String.valueOf(button.getText());
                     String selected = String.valueOf(v.getTag());
 
-
                     editor.putString("typeSelected", typeSelected);
-                    //editor.putInt("selectedClass", Integer.valueOf(selected));
-                    //editor.putBoolean("isYouth", isYouth);
+                    editor.putInt("selectedType", Integer.parseInt(selected));
                     editor.apply();
                 }
             });
             typeGroup.addView(button);
         }
-        if (selectedClass > -1) {
-            classGroup.check(classGroup.getChildAt(selectedClass).getId());
+        if (selectedType > -1) {
+            typeGroup.check(typeGroup.getChildAt(selectedType).getId());
         }
     }
 
@@ -225,6 +225,8 @@ public class EntryActivity extends AppCompatActivity {
         pgName = defaults.getString("pgName", "");
         make = defaults.getString("make", "");
         size = defaults.getString("size", "");
+        typeSelected = defaults.getString("typeSelected", "");
+
 
         if (mode == 0) {
             enteredByTextInput.setVisibility(View.GONE);
@@ -395,9 +397,9 @@ public class EntryActivity extends AppCompatActivity {
                 day = c.get(Calendar.DAY_OF_MONTH);
             } else {
                 String[] dateBits = date.split("-");
-                year = Integer.valueOf(dateBits[0]);
-                month = Integer.valueOf(dateBits[1]) - 1;
-                day = Integer.valueOf(dateBits[2]);
+                year = Integer.parseInt(dateBits[0]);
+                month = Integer.parseInt(dateBits[1]) - 1;
+                day = Integer.parseInt(dateBits[2]);
             }
 
 

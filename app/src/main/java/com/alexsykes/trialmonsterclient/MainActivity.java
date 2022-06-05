@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_TRIAL_ACTIVITY_REQUEST_CODE = 1;
     ArrayList<HashMap<String, String>> theTrialList;
     boolean canConnect;
-    // BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
