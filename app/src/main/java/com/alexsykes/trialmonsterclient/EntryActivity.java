@@ -28,8 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-/* TODO Add listeners for field changes
- *   Sort out course / class initialisation from defaults - done
+/* TODO Setup type buttons
  *   Tidy-up datepicker fragment
  *
  *
@@ -46,11 +45,11 @@ public class EntryActivity extends AppCompatActivity {
     MaterialButtonToggleGroup courseGroup, classGroup, typeGroup;
     Button dateButton;
     Date dob;
-    String courses, classes, courseSelected, classSelected, make, size, typeSelected;
+    String courses, classes, courseSelected, classSelected, make, size,
+            typeSelected, pgName, firstname, lastname, enteredBy, acu, email;
     String[] courselist, classlist, types;
     LinearLayout youthStack, dobStack;
 
-    String firstname, lastname, enteredBy, acu;
     SharedPreferences defaults;
     SharedPreferences.Editor editor;
 
@@ -76,13 +75,18 @@ public class EntryActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // Log.i("Info", "onStop: ");
         editor = defaults.edit();
-        editor.putString("firstname", firstNameTextInput.getEditText().getText().toString());
-        editor.putString("enteredBy", enteredByTextInput.getEditText().getText().toString());
-        editor.putString("lastname", lastnameTextInput.getEditText().getText().toString());
         editor.putString("email", emailTextInput.getEditText().getText().toString());
+        editor.putString("enteredBy", enteredByTextInput.getEditText().getText().toString());
+        editor.putString("firstname", firstNameTextInput.getEditText().getText().toString());
+        editor.putString("lastname", lastnameTextInput.getEditText().getText().toString());
         editor.putString("acu", acuTextInput.getEditText().getText().toString());
+        editor.putString("pgName", pgTextInput.getEditText().getText().toString());
+        editor.putString("acu", acuTextInput.getEditText().getText().toString());
+        editor.putString("make", makeTextInput.getEditText().getText().toString());
+        editor.putString("size", sizeTextInput.getEditText().getText().toString());
+        editor.putInt("mode", mode);
+
         editor.apply();
     }
 
@@ -210,6 +214,18 @@ public class EntryActivity extends AppCompatActivity {
         enteredByTextInput.setVisibility(View.GONE);
         defaults = this.getPreferences(Context.MODE_PRIVATE);
         mode = defaults.getInt("mode", 0);
+        courseSelected = defaults.getString("courseSelected", courseSelected);
+        classSelected = defaults.getString("classSelected", classSelected);
+        isYouth = classSelected != null && classSelected.toLowerCase().contains("youth");
+        enteredBy = defaults.getString("enteredBy", "");
+        email = defaults.getString("email", "");
+        firstname = defaults.getString("firstname", "");
+        lastname = defaults.getString("lastname", "");
+        acu = defaults.getString("acu", "");
+        pgName = defaults.getString("pgName", "");
+        make = defaults.getString("make", "");
+        size = defaults.getString("size", "");
+
         if (mode == 0) {
             enteredByTextInput.setVisibility(View.GONE);
             modeGroup.check(R.id.myselfRadioButton);
@@ -218,18 +234,14 @@ public class EntryActivity extends AppCompatActivity {
             modeGroup.check(R.id.otherRadioButton);
         }
 
-        enteredByTextInput.getEditText().setText(defaults.getString("enteredBy", ""));
-        firstNameTextInput.getEditText().setText(defaults.getString("firstname", ""));
-        lastnameTextInput.getEditText().setText(defaults.getString("lastname", ""));
-        emailTextInput.getEditText().setText(defaults.getString("email", ""));
-        acuTextInput.getEditText().setText(defaults.getString("acu", ""));
-        pgTextInput.getEditText().setText(defaults.getString("pgName", ""));
-        makeTextInput.getEditText().setText(defaults.getString("make", ""));
-        sizeTextInput.getEditText().setText(defaults.getString("size", ""));
-
-        courseSelected = defaults.getString("courseSelected", courseSelected);
-        classSelected = defaults.getString("classSelected", classSelected);
-        isYouth = classSelected != null && classSelected.toLowerCase().contains("youth");
+        enteredByTextInput.getEditText().setText(enteredBy);
+        firstNameTextInput.getEditText().setText(firstname);
+        lastnameTextInput.getEditText().setText(lastname);
+        emailTextInput.getEditText().setText(email);
+        acuTextInput.getEditText().setText(acu);
+        pgTextInput.getEditText().setText(pgName);
+        makeTextInput.getEditText().setText(make);
+        sizeTextInput.getEditText().setText(size);
 
         if (isYouth) {
             //  youthStack.setVisibility(View.VISIBLE);
@@ -246,35 +258,9 @@ public class EntryActivity extends AppCompatActivity {
         enteredByTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                enteredBy = enteredByTextInput.getEditText().getText().toString();
                 editor = defaults.edit();
-                editor.putString("enteredBy", enteredByTextInput.getEditText().getText().toString());
-                editor.apply();
-            }
-        });
-
-        firstNameTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editor = defaults.edit();
-                editor.putString("firstname", firstNameTextInput.getEditText().getText().toString());
-                editor.apply();
-            }
-        });
-
-        lastnameTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editor = defaults.edit();
-                editor.putString("lastname", lastnameTextInput.getEditText().getText().toString());
-                editor.apply();
-            }
-        });
-
-        acuTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editor = defaults.edit();
-                editor.putString("acu", acuTextInput.getEditText().getText().toString());
+                editor.putString("enteredBy", enteredBy);
                 editor.apply();
             }
         });
@@ -282,8 +268,39 @@ public class EntryActivity extends AppCompatActivity {
         emailTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                email = emailTextInput.getEditText().getText().toString();
                 editor = defaults.edit();
-                editor.putString("email", emailTextInput.getEditText().getText().toString());
+                editor.putString("email", email);
+                editor.apply();
+            }
+        });
+
+        firstNameTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                firstname = firstNameTextInput.getEditText().getText().toString();
+                editor = defaults.edit();
+                editor.putString("firstname", firstname);
+                editor.apply();
+            }
+        });
+
+        lastnameTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                lastname = lastnameTextInput.getEditText().getText().toString();
+                editor = defaults.edit();
+                editor.putString("lastname", lastname);
+                editor.apply();
+            }
+        });
+
+        acuTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                acu = acuTextInput.getEditText().getText().toString();
+                editor = defaults.edit();
+                editor.putString("acu", acu);
                 editor.apply();
             }
         });
@@ -291,8 +308,9 @@ public class EntryActivity extends AppCompatActivity {
         pgTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                pgName = pgTextInput.getEditText().getText().toString();
                 editor = defaults.edit();
-                editor.putString("pgName", pgTextInput.getEditText().getText().toString());
+                editor.putString("pgName", pgName);
                 editor.apply();
             }
         });
@@ -300,8 +318,9 @@ public class EntryActivity extends AppCompatActivity {
         makeTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                make = makeTextInput.getEditText().getText().toString();
                 editor = defaults.edit();
-                editor.putString("make", makeTextInput.getEditText().getText().toString());
+                editor.putString("make", make);
                 editor.apply();
             }
         });
@@ -309,12 +328,12 @@ public class EntryActivity extends AppCompatActivity {
         sizeTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                size = sizeTextInput.getEditText().getText().toString();
                 editor = defaults.edit();
-                editor.putString("size", sizeTextInput.getEditText().getText().toString());
+                editor.putString("size", size);
                 editor.apply();
             }
         });
-
 
         modeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -324,10 +343,12 @@ public class EntryActivity extends AppCompatActivity {
                     case -1:
                         break;
                     case R.id.myselfRadioButton:
+                        mode = 0;
                         enteredByTextInput.setVisibility(View.GONE);
                         editor.putInt("mode", 0);
                         break;
                     case R.id.otherRadioButton:
+                        mode = 1;
                         enteredByTextInput.setVisibility(View.VISIBLE);
                         editor.putInt("mode", 1);
                         break;
