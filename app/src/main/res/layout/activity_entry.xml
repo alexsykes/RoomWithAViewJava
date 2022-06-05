@@ -140,13 +140,8 @@
             android:layout_height="wrap_content"
             app:singleSelection="true" />
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/courseGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:singleSelection="true" />
-
-        <LinearLayout
+        <!-- LinearLayout
+            android:id="@+id/youthStack"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -169,16 +164,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
-        </LinearLayout>
+        </LinearLayout -->
 
         <LinearLayout
+            android:id="@+id/dobStack"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/dobLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -199,34 +195,52 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pgTextInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pgEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Parent / Guardian" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/courseGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true" />
+
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/makeTextInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/makeEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="hint" />
+                android:hint="@string/make" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sizeTextInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sizeEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="hint" />
+                android:hint="@string/size" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/typeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true" />
 
     </LinearLayout>
 </ScrollView>

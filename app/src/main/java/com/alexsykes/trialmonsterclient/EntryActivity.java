@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -36,17 +37,18 @@ import java.util.Date;
  * */
 
 public class EntryActivity extends AppCompatActivity {
-    TextInputLayout firstNameTextInput, lastnameTextInput, emailTextInput, enteredByTextInput, acuTextInput;
-    // TextInputEditText firstnameEditText, lastnameEditText;
+    TextInputLayout firstNameTextInput, lastnameTextInput, emailTextInput, enteredByTextInput, acuTextInput, pgTextInput, sizeTextInput, makeTextInput;
     RadioGroup modeGroup;
     RadioButton myselfRadioButton, otherRadioButton;
     int mode;
     int selectedCourse, selectedClass;
-    MaterialButtonToggleGroup courseGroup, classGroup;
+    boolean isYouth;
+    MaterialButtonToggleGroup courseGroup, classGroup, typeGroup;
     Button dateButton;
     Date dob;
-    String courses, classes, courseSelected, classSelected;
-    String[] courselist, classlist;
+    String courses, classes, courseSelected, classSelected, make, size, typeSelected;
+    String[] courselist, classlist, types;
+    LinearLayout youthStack, dobStack;
 
     String firstname, lastname, enteredBy, acu;
     SharedPreferences defaults;
@@ -62,6 +64,7 @@ public class EntryActivity extends AppCompatActivity {
         classes = getIntent().getStringExtra("classes");
         courselist = courses.split(",");
         classlist = classes.split(",");
+        types = new String[]{"2T", "4T", "e-bike"};
 
         // Get saved values from prefs
         defaults = this.getPreferences(Context.MODE_PRIVATE);
@@ -90,10 +93,17 @@ public class EntryActivity extends AppCompatActivity {
         emailTextInput = findViewById(R.id.emailTextInput);
         enteredByTextInput = findViewById(R.id.enteredByTextInput);
         acuTextInput = findViewById(R.id.acuTextInput);
+        pgTextInput = findViewById(R.id.pgTextInput);
+        makeTextInput = findViewById(R.id.makeTextInput);
+        sizeTextInput = findViewById(R.id.sizeTextInput);
 
         modeGroup = findViewById(R.id.modeGroup);
         myselfRadioButton = findViewById(R.id.myselfRadioButton);
         otherRadioButton = findViewById(R.id.otherRadioButton);
+
+        // youthSwitch = findViewById(R.id.youthSwitch);
+        // youthStack = findViewById(R.id.youthStack);
+        dobStack = findViewById(R.id.dobStack);
 
         // Initialise
         classGroup = findViewById(R.id.classGroup);
@@ -103,6 +113,10 @@ public class EntryActivity extends AppCompatActivity {
         courseGroup = findViewById(R.id.courseGroup);
         courseGroup.setSelectionRequired(true);
         courseGroup.setSingleSelection(true);
+
+        typeGroup = findViewById(R.id.typeGroup);
+        typeGroup.setSelectionRequired(true);
+        typeGroup.setSingleSelection(true);
 
         int style = R.attr.materialButtonOutlinedStyle;
 
@@ -126,9 +140,7 @@ public class EntryActivity extends AppCompatActivity {
                     editor.apply();
                 }
             });
-
             courseGroup.addView(button);
-
         }
         if (selectedCourse > -1) {
             courseGroup.check(courseGroup.getChildAt(selectedCourse).getId());
@@ -145,12 +157,48 @@ public class EntryActivity extends AppCompatActivity {
                     classSelected = String.valueOf(button.getText());
                     String selected = String.valueOf(v.getTag());
 
+                    if (classSelected.toLowerCase().contains("youth")) {
+                        isYouth = true;
+                        // youthStack.setVisibility(View.VISIBLE);
+                        dobStack.setVisibility(View.VISIBLE);
+                        pgTextInput.setVisibility(View.VISIBLE);
+                    } else {
+                        isYouth = false;
+                        // youthStack.setVisibility(View.GONE);
+                        dobStack.setVisibility(View.GONE);
+                        pgTextInput.setVisibility(View.GONE);
+                    }
+
                     editor.putString("classSelected", classSelected);
                     editor.putInt("selectedClass", Integer.valueOf(selected));
+                    editor.putBoolean("isYouth", isYouth);
                     editor.apply();
                 }
             });
             classGroup.addView(button);
+        }
+        if (selectedClass > -1) {
+            classGroup.check(classGroup.getChildAt(selectedClass).getId());
+        }
+        for (int i = 0; i < types.length; i++) {
+            MaterialButton button = new MaterialButton(this, null, style);
+            button.setTag(i);
+            button.setText(types[i]);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editor = defaults.edit();
+                    typeSelected = String.valueOf(button.getText());
+                    String selected = String.valueOf(v.getTag());
+
+
+                    editor.putString("typeSelected", typeSelected);
+                    //editor.putInt("selectedClass", Integer.valueOf(selected));
+                    //editor.putBoolean("isYouth", isYouth);
+                    editor.apply();
+                }
+            });
+            typeGroup.addView(button);
         }
         if (selectedClass > -1) {
             classGroup.check(classGroup.getChildAt(selectedClass).getId());
@@ -175,18 +223,98 @@ public class EntryActivity extends AppCompatActivity {
         lastnameTextInput.getEditText().setText(defaults.getString("lastname", ""));
         emailTextInput.getEditText().setText(defaults.getString("email", ""));
         acuTextInput.getEditText().setText(defaults.getString("acu", ""));
+        pgTextInput.getEditText().setText(defaults.getString("pgName", ""));
+        makeTextInput.getEditText().setText(defaults.getString("make", ""));
+        sizeTextInput.getEditText().setText(defaults.getString("size", ""));
+
         courseSelected = defaults.getString("courseSelected", courseSelected);
         classSelected = defaults.getString("classSelected", classSelected);
+        isYouth = classSelected != null && classSelected.toLowerCase().contains("youth");
+
+        if (isYouth) {
+            //  youthStack.setVisibility(View.VISIBLE);
+            dobStack.setVisibility(View.VISIBLE);
+            pgTextInput.setVisibility(View.VISIBLE);
+        } else {
+            //   youthStack.setVisibility(View.GONE);
+            dobStack.setVisibility(View.GONE);
+            pgTextInput.setVisibility(View.GONE);
+        }
     }
 
     private void addListeners() {
-/*        enteredByTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        enteredByTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                //enteredByTextInput.getEditText().setText("OK");
-                Log.i("Info", "onFocusChange: ");
+                editor = defaults.edit();
+                editor.putString("enteredBy", enteredByTextInput.getEditText().getText().toString());
+                editor.apply();
             }
-        });*/
+        });
+
+        firstNameTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editor = defaults.edit();
+                editor.putString("firstname", firstNameTextInput.getEditText().getText().toString());
+                editor.apply();
+            }
+        });
+
+        lastnameTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editor = defaults.edit();
+                editor.putString("lastname", lastnameTextInput.getEditText().getText().toString());
+                editor.apply();
+            }
+        });
+
+        acuTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editor = defaults.edit();
+                editor.putString("acu", acuTextInput.getEditText().getText().toString());
+                editor.apply();
+            }
+        });
+
+        emailTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editor = defaults.edit();
+                editor.putString("email", emailTextInput.getEditText().getText().toString());
+                editor.apply();
+            }
+        });
+
+        pgTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editor = defaults.edit();
+                editor.putString("pgName", pgTextInput.getEditText().getText().toString());
+                editor.apply();
+            }
+        });
+
+        makeTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editor = defaults.edit();
+                editor.putString("make", makeTextInput.getEditText().getText().toString());
+                editor.apply();
+            }
+        });
+
+        sizeTextInput.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                editor = defaults.edit();
+                editor.putString("size", sizeTextInput.getEditText().getText().toString());
+                editor.apply();
+            }
+        });
+
 
         modeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
