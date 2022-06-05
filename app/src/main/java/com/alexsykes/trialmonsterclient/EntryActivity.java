@@ -28,7 +28,7 @@ import java.util.Date;
 
 
 /* TODO Add listeners for field changes
- *   Sort out course / class initialisation from defaults
+ *   Sort out course / class initialisation from defaults - done
  *   Tidy-up datepicker fragment
  *
  *
@@ -41,7 +41,7 @@ public class EntryActivity extends AppCompatActivity {
     RadioGroup modeGroup;
     RadioButton myselfRadioButton, otherRadioButton;
     int mode;
-    int selectedCourseID, selectedClassID;
+    int selectedCourse, selectedClass;
     MaterialButtonToggleGroup courseGroup, classGroup;
     Button dateButton;
     Date dob;
@@ -52,6 +52,7 @@ public class EntryActivity extends AppCompatActivity {
     SharedPreferences defaults;
     SharedPreferences.Editor editor;
 
+    // MARK: Lifecycle events
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,36 +62,18 @@ public class EntryActivity extends AppCompatActivity {
         classes = getIntent().getStringExtra("classes");
         courselist = courses.split(",");
         classlist = classes.split(",");
+
+        // Get saved values from prefs
         defaults = this.getPreferences(Context.MODE_PRIVATE);
         setUpUI();
         setupInitialValues();
-        MaterialButton classSelectedButton = findViewById(selectedClassID);
-        MaterialButton courseSelectedButton = findViewById(selectedCourseID);
-//        classSelectedButton.setChecked(true);
-//        courseSelectedButton.setChecked(true);
         addListeners();
-    }
-
-    public void updateDoB(int year, int month, int day) {
-        Log.i("Info", "updateDoB: ");
-        dateButton = findViewById(R.id.dateButton);
-
-        String month_string = Integer.toString(month + 1);
-        String day_string = Integer.toString(day);
-        String year_string = Integer.toString(year);
-        String date = (day_string + "-" + month_string + "-" + year_string);
-        editor = defaults.edit();
-        editor.putString("dob", year_string + "-" + month_string + "-" + day_string);
-        editor.apply();
-
-        //    Date date1=new SimpleDateFormat("dd-MM-yyyy").parse(date);
-        dateButton.setText(date);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i("Info", "onStop: ");
+        // Log.i("Info", "onStop: ");
         editor = defaults.edit();
         editor.putString("firstname", firstNameTextInput.getEditText().getText().toString());
         editor.putString("enteredBy", enteredByTextInput.getEditText().getText().toString());
@@ -101,6 +84,79 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     // MARK: Utility methods
+    private void setUpUI() {
+        firstNameTextInput = findViewById(R.id.firstnameTextInput);
+        lastnameTextInput = findViewById(R.id.lastnameTextInput);
+        emailTextInput = findViewById(R.id.emailTextInput);
+        enteredByTextInput = findViewById(R.id.enteredByTextInput);
+        acuTextInput = findViewById(R.id.acuTextInput);
+
+        modeGroup = findViewById(R.id.modeGroup);
+        myselfRadioButton = findViewById(R.id.myselfRadioButton);
+        otherRadioButton = findViewById(R.id.otherRadioButton);
+
+        // Initialise
+        classGroup = findViewById(R.id.classGroup);
+        classGroup.setSelectionRequired(true);
+        classGroup.setSingleSelection(true);
+
+        courseGroup = findViewById(R.id.courseGroup);
+        courseGroup.setSelectionRequired(true);
+        courseGroup.setSingleSelection(true);
+
+        int style = R.attr.materialButtonOutlinedStyle;
+
+        selectedClass = defaults.getInt("selectedClass", -1);
+        selectedCourse = defaults.getInt("selectedCourse", -1);
+
+        for (int i = 0; i < courselist.length; i++) {
+            MaterialButton button = new MaterialButton(this, null, style);
+            button.setTag(i);
+            button.setText(courselist[i]);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editor = defaults.edit();
+                    courseSelected = String.valueOf(button.getText());
+                    String selected = String.valueOf(v.getTag());
+
+                    editor.putString("courseSelected", courseSelected);
+                    editor.putInt("selectedCourse", Integer.valueOf(selected));
+                    editor.apply();
+                }
+            });
+
+            courseGroup.addView(button);
+
+        }
+        if (selectedCourse > -1) {
+            courseGroup.check(courseGroup.getChildAt(selectedCourse).getId());
+        }
+
+        for (int i = 0; i < classlist.length; i++) {
+            MaterialButton button = new MaterialButton(this, null, style);
+            button.setTag(i);
+            button.setText(classlist[i]);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editor = defaults.edit();
+                    classSelected = String.valueOf(button.getText());
+                    String selected = String.valueOf(v.getTag());
+
+                    editor.putString("classSelected", classSelected);
+                    editor.putInt("selectedClass", Integer.valueOf(selected));
+                    editor.apply();
+                }
+            });
+            classGroup.addView(button);
+        }
+        if (selectedClass > -1) {
+            classGroup.check(classGroup.getChildAt(selectedClass).getId());
+        }
+    }
+
     private void setupInitialValues() {
         modeGroup.check(R.id.myselfRadioButton);
         enteredByTextInput.setVisibility(View.GONE);
@@ -119,76 +175,8 @@ public class EntryActivity extends AppCompatActivity {
         lastnameTextInput.getEditText().setText(defaults.getString("lastname", ""));
         emailTextInput.getEditText().setText(defaults.getString("email", ""));
         acuTextInput.getEditText().setText(defaults.getString("acu", ""));
-        courseSelected = defaults.getString("courseSelected", "");
-        classSelected = defaults.getString("classSelected", "");
-        selectedClassID = defaults.getInt("selectedClassID", -1);
-        selectedCourseID = defaults.getInt("selectedCourseID", -1);
-
-        //       MaterialButton classActive = findViewById(classSelected);
-        //       classActive.setChecked(true);
-        //       MaterialButton courseActive = findViewById(courseSelected);
-        //       courseActive.setChecked(true);
-    }
-
-    private void setUpUI() {
-        firstNameTextInput = findViewById(R.id.firstnameTextInput);
-        lastnameTextInput = findViewById(R.id.lastnameTextInput);
-        emailTextInput = findViewById(R.id.emailTextInput);
-        enteredByTextInput = findViewById(R.id.enteredByTextInput);
-        acuTextInput = findViewById(R.id.acuTextInput);
-
-        modeGroup = findViewById(R.id.modeGroup);
-        myselfRadioButton = findViewById(R.id.myselfRadioButton);
-        otherRadioButton = findViewById(R.id.otherRadioButton);
-
-        classGroup = findViewById(R.id.classGroup);
-        classGroup.setSelectionRequired(true);
-        classGroup.removeAllViews();
-
-        courseGroup = findViewById(R.id.courseGroup);
-        courseGroup.setSelectionRequired(true);
-        courseGroup.removeAllViews();
-
-        MaterialButton button;
-        int style = R.attr.materialButtonOutlinedStyle;
-        // style = R.style.CustomButtonStyle;
-        for (int i = 0; i < courselist.length; i++) {
-            button = new MaterialButton(this, null, style);
-            button.setTag(i);
-            button.setText(courselist[i]);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editor = defaults.edit();
-                    String selected = String.valueOf(v.getTag());
-                    int id = v.getId();
-                    editor.putString("selectedCourse", selected);
-                    editor.putInt("selectedCourseID", id);
-                    editor.apply();
-                    //   Log.i("Info", "Course: " + selected);
-                }
-            });
-            courseGroup.addView(button);
-        }
-        // style = R.style.CustomButtonStyle;
-        for (int i = 0; i < classlist.length; i++) {
-            button = new MaterialButton(this, null, style);
-            button.setTag(i);
-            button.setText(classlist[i]);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editor = defaults.edit();
-                    String selected = String.valueOf(v.getTag());
-                    int id = v.getId();
-                    editor.putString("selectedClass", selected);
-                    editor.putInt("selectedClassID", id);
-                    editor.apply();
-                    //   Log.i("Info", "Class: " + selected);
-                }
-            });
-            classGroup.addView(button);
-        }
+        courseSelected = defaults.getString("courseSelected", courseSelected);
+        classSelected = defaults.getString("classSelected", classSelected);
     }
 
     private void addListeners() {
@@ -221,6 +209,20 @@ public class EntryActivity extends AppCompatActivity {
                 editor.apply();
             }
         });
+    }
+
+    public void updateDoB(int year, int month, int day) {
+        Log.i("Info", "updateDoB: ");
+        dateButton = findViewById(R.id.dateButton);
+
+        String month_string = Integer.toString(month + 1);
+        String day_string = Integer.toString(day);
+        String year_string = Integer.toString(year);
+        String date = (day_string + "-" + month_string + "-" + year_string);
+        editor = defaults.edit();
+        editor.putString("dob", year_string + "-" + month_string + "-" + day_string);
+        editor.apply();
+        dateButton.setText(date);
     }
 
     public void showDatePickerDialog(View view) {
