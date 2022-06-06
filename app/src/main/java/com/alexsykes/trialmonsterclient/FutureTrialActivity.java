@@ -66,6 +66,7 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
 
     private void goEntry() {
         Intent intent = new Intent(FutureTrialActivity.this, EntryActivity.class);
+        intent.putExtra("trialid", trialid);
         intent.putExtra("courses", courses);
         intent.putExtra("classes", classes);
         startActivity(intent);

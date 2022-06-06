@@ -10,6 +10,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -24,6 +28,16 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,6 +50,7 @@ import java.util.Date;
  * */
 
 public class EntryActivity extends AppCompatActivity {
+    String TAG = "Info";
     TextInputLayout firstNameTextInput, lastnameTextInput, emailTextInput, enteredByTextInput, acuTextInput, pgTextInput, sizeTextInput, makeTextInput;
     RadioGroup modeGroup;
     RadioButton myselfRadioButton, otherRadioButton;
@@ -44,14 +59,15 @@ public class EntryActivity extends AppCompatActivity {
     boolean isYouth;
     MaterialButtonToggleGroup courseGroup, classGroup, typeGroup;
     Button dateButton;
-    Date dob;
+    String dob, dateForButton;
     String courses, classes, courseSelected, classSelected, make, size,
-            typeSelected, pgName, firstname, lastname, enteredBy, acu, email;
+            typeSelected, pgName, firstname, lastname, enteredBy, acu, email, trialid;
     String[] courselist, classlist, types;
     LinearLayout youthStack, dobStack;
 
     SharedPreferences defaults;
     SharedPreferences.Editor editor;
+    private URL url;
 
     // MARK: Lifecycle events
     @Override
@@ -59,6 +75,7 @@ public class EntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
         // Get course / class data from intent
+        trialid = getIntent().getStringExtra("trialid");
         courses = getIntent().getStringExtra("courses");
         classes = getIntent().getStringExtra("classes");
         courselist = courses.split(",");
@@ -90,6 +107,30 @@ public class EntryActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.entry_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_make_entry:
+                try {
+                    makeEntry();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            default:
+
+        }
+        return false;
+    }
+
+
     // MARK: Utility methods
     private void setUpUI() {
         firstNameTextInput = findViewById(R.id.firstnameTextInput);
@@ -108,6 +149,7 @@ public class EntryActivity extends AppCompatActivity {
         // youthSwitch = findViewById(R.id.youthSwitch);
         // youthStack = findViewById(R.id.youthStack);
         dobStack = findViewById(R.id.dobStack);
+        dateButton = findViewById(R.id.dateButton);
 
         // Initialise
         classGroup = findViewById(R.id.classGroup);
@@ -226,7 +268,7 @@ public class EntryActivity extends AppCompatActivity {
         make = defaults.getString("make", "");
         size = defaults.getString("size", "");
         typeSelected = defaults.getString("typeSelected", "");
-
+        dob = defaults.getString("dob", "");
 
         if (mode == 0) {
             enteredByTextInput.setVisibility(View.GONE);
@@ -244,6 +286,9 @@ public class EntryActivity extends AppCompatActivity {
         pgTextInput.getEditText().setText(pgName);
         makeTextInput.getEditText().setText(make);
         sizeTextInput.getEditText().setText(size);
+
+        dateForButton = formatDate(dob);
+        dateButton.setText(dateForButton);
 
         if (isYouth) {
             //  youthStack.setVisibility(View.VISIBLE);
@@ -369,15 +414,63 @@ public class EntryActivity extends AppCompatActivity {
         String month_string = Integer.toString(month + 1);
         String day_string = Integer.toString(day);
         String year_string = Integer.toString(year);
-        String date = (day_string + "-" + month_string + "-" + year_string);
+        String date = (year_string + "-" + month_string + "-" + day_string);
         editor = defaults.edit();
-        editor.putString("dob", year_string + "-" + month_string + "-" + day_string);
+        editor.putString("dob", date);
         editor.apply();
-        dateButton.setText(date);
+        dateForButton = formatDate(date);
+        dateButton.setText(dateForButton);
+    }
+
+    private void makeEntry() throws MalformedURLException {
+        // Prepare data for upload
+        String[] fields = {courseSelected, classSelected, make, size,
+                typeSelected, pgName, firstname, lastname, enteredBy, acu, email, trialid};
+
+        String header = "courseSelected, classSelected, make, size,\n" +
+                "                typeSelected, pgName, firstname, lastname, enteredBy, acu, email, trialid";
+        Log.i(TAG, "fields: " + String.join(",", fields));
+        Log.i(TAG, "header: " + header);
+
+        url = new URL("http://android.trialmonster.uk/uploadEntryData.php/");
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            urlConnection.setDoOutput(true);
+            urlConnection.setChunkedStreamingMode(0);
+
+            OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+            //  writeStream(out);
+
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            //  readStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            urlConnection.disconnect();
+        }
+    }
+
+    private String formatDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+
+        try {
+            Date prefsdate = format.parse(date);
+            format = new SimpleDateFormat("MMM d, yyyy");
+            dateForButton = format.format(prefsdate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateForButton;
     }
 
     public void showDatePickerDialog(View view) {
         DialogFragment newFragment = new DatePickerFragment();
+
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
@@ -401,7 +494,6 @@ public class EntryActivity extends AppCompatActivity {
                 month = Integer.parseInt(dateBits[1]) - 1;
                 day = Integer.parseInt(dateBits[2]);
             }
-
 
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), this, year, month, day);
