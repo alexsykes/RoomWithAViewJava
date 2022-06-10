@@ -3,6 +3,8 @@ package com.alexsykes.trialmonsterclient;
 
 // https://www.tutlane.com/tutorial/android/android-datepicker-with-examples
 // https://stackoverflow.com/questions/57212800/how-to-return-the-results-form-a-datepickerfragment-to-a-fragment
+// https://stackoverflow.com/questions/67647393/post-request-with-volley-with-headers-and-body-java-android-studio
+// https://www.itsalif.info/content/android-volley-tutorial-http-get-post-put
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -24,9 +26,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -36,10 +49,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /* TODO
@@ -118,11 +134,13 @@ public class EntryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_make_entry:
-                try {
-                    makeEntry();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                uploadEntry();
+                //postRequest();
+//                try {
+//                    makeEntry();
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//
                 return true;
             default:
 
@@ -130,6 +148,61 @@ public class EntryActivity extends AppCompatActivity {
         return false;
     }
 
+    private void postRequest() {
+        RequestQueue queue = Volley.newRequestQueue(this);  // this = context
+        final String url = "https://android.trialmonster.uk/test.php";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", "Alif");
+                params.put("domain", "http://itsalif.info");
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
+    }
+
+    private void getRequest() {
+        final String url = "https://httpbin.org/get?param1=hello";
+        final String url1 = "https://android.trialmonster.uk/test.php";
+        RequestQueue queue = Volley.newRequestQueue(this);
+// prepare the Request
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url1, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        Log.d("Response", response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        );
+
+// add it to the RequestQueue
+        queue.add(getRequest);
+    }
 
     // MARK: Utility methods
     private void setUpUI() {
@@ -241,6 +314,7 @@ public class EntryActivity extends AppCompatActivity {
 
                     editor.putString("typeSelected", typeSelected);
                     editor.putInt("selectedType", Integer.parseInt(selected));
+                    selectedType = Integer.parseInt(selected);
                     editor.apply();
                 }
             });
@@ -422,8 +496,79 @@ public class EntryActivity extends AppCompatActivity {
         dateButton.setText(dateForButton);
     }
 
+    public void uploadEntry() {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String URL = "https://android.trialmonster.uk/uploadEntryData.php";
+        JSONArray data = new JSONArray();
+
+        data.put(firstname);
+        data.put(lastname);
+        data.put(acu);
+        data.put(classSelected);
+        data.put(courseSelected);
+        data.put(email);
+        data.put(enteredBy);
+        data.put(make);
+        data.put(size);
+        data.put(trialid);
+        data.put(pgName);
+        data.put(isYouth);
+        data.put(selectedType);
+        data.put(dob);
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                // request body goes here
+
+                String requestBody = data.toString();
+                return requestBody.getBytes(StandardCharsets.UTF_8);
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+
+        };
+
+
+        Log.d("string", stringRequest.toString());
+        requestQueue.add(stringRequest);
+    }
+
+    private void showResponse(String response) {
+        // try {
+        // JSONArray jsonArray = new JSONArray(response);
+        Log.i("VOLLEY", "showResponse: " + response);
+//        } catch (JSONException e) {
+//            Log.i("VOLLEY", "printStackTrace: " );
+//            e.printStackTrace();
+//        }
+    }
+
     private void makeEntry() throws MalformedURLException {
         // Prepare data for upload
+
         String[] fields = {courseSelected, classSelected, make, size,
                 typeSelected, pgName, firstname, lastname, enteredBy, acu, email, trialid};
 
@@ -473,6 +618,7 @@ public class EntryActivity extends AppCompatActivity {
 
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
+
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
