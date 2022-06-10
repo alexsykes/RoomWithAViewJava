@@ -31,7 +31,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
@@ -39,15 +38,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
@@ -90,6 +81,7 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+
         // Get course / class data from intent
         trialid = getIntent().getStringExtra("trialid");
         courses = getIntent().getStringExtra("courses");
@@ -135,73 +127,10 @@ public class EntryActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_make_entry:
                 uploadEntry();
-                //postRequest();
-//                try {
-//                    makeEntry();
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//
                 return true;
             default:
-
         }
         return false;
-    }
-
-    private void postRequest() {
-        RequestQueue queue = Volley.newRequestQueue(this);  // this = context
-        final String url = "https://android.trialmonster.uk/test.php";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Log.d("Error.Response", error.toString());
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("name", "Alif");
-                params.put("domain", "http://itsalif.info");
-
-                return params;
-            }
-        };
-        queue.add(postRequest);
-    }
-
-    private void getRequest() {
-        final String url = "https://httpbin.org/get?param1=hello";
-        final String url1 = "https://android.trialmonster.uk/test.php";
-        RequestQueue queue = Volley.newRequestQueue(this);
-// prepare the Request
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url1, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // display response
-                        Log.d("Response", response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
-                    }
-                }
-        );
-
-// add it to the RequestQueue
-        queue.add(getRequest);
     }
 
     // MARK: Utility methods
@@ -247,6 +176,7 @@ public class EntryActivity extends AppCompatActivity {
             MaterialButton button = new MaterialButton(this, null, style);
             button.setTag(i);
             button.setText(classlist[i]);
+            button.setTextSize(12);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -282,7 +212,7 @@ public class EntryActivity extends AppCompatActivity {
             MaterialButton button = new MaterialButton(this, null, style);
             button.setTag(i);
             button.setText(courselist[i]);
-
+            button.setTextSize(12);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -482,7 +412,6 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     public void updateDoB(int year, int month, int day) {
-        Log.i("Info", "updateDoB: ");
         dateButton = findViewById(R.id.dateButton);
 
         String month_string = Integer.toString(month + 1);
@@ -499,6 +428,7 @@ public class EntryActivity extends AppCompatActivity {
     public void uploadEntry() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String URL = "https://android.trialmonster.uk/uploadEntryData.php";
+
         JSONArray data = new JSONArray();
 
         data.put(firstname);
@@ -515,7 +445,6 @@ public class EntryActivity extends AppCompatActivity {
         data.put(isYouth);
         data.put(selectedType);
         data.put(dob);
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
@@ -548,56 +477,10 @@ public class EntryActivity extends AppCompatActivity {
                 params.put("Content-Type", "application/json");
                 return params;
             }
-
         };
-
 
         Log.d("string", stringRequest.toString());
         requestQueue.add(stringRequest);
-    }
-
-    private void showResponse(String response) {
-        // try {
-        // JSONArray jsonArray = new JSONArray(response);
-        Log.i("VOLLEY", "showResponse: " + response);
-//        } catch (JSONException e) {
-//            Log.i("VOLLEY", "printStackTrace: " );
-//            e.printStackTrace();
-//        }
-    }
-
-    private void makeEntry() throws MalformedURLException {
-        // Prepare data for upload
-
-        String[] fields = {courseSelected, classSelected, make, size,
-                typeSelected, pgName, firstname, lastname, enteredBy, acu, email, trialid};
-
-        String header = "courseSelected, classSelected, make, size,\n" +
-                "                typeSelected, pgName, firstname, lastname, enteredBy, acu, email, trialid";
-        Log.i(TAG, "fields: " + String.join(",", fields));
-        Log.i(TAG, "header: " + header);
-
-        url = new URL("http://android.trialmonster.uk/uploadEntryData.php/");
-        HttpURLConnection urlConnection = null;
-        try {
-            urlConnection = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            urlConnection.setDoOutput(true);
-            urlConnection.setChunkedStreamingMode(0);
-
-            OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-            //  writeStream(out);
-
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            //  readStream(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            urlConnection.disconnect();
-        }
     }
 
     private String formatDate(String date) {

@@ -66,4 +66,10 @@
     <string name="DoB">DoB</string>
     <string name="make">Make</string>
     <string name="size">Size</string>
+    <string name="parent_guardian">Parent / Guardian</string>
+    <string name="entry_details">Entry details</string>
+    <string name="machine_details">Machine details</string>
+    <string name="rider_details">Rider details</string>
+    <string name="course">Course
+    </string>
 </resources>
