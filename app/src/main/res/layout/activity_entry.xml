@@ -151,7 +151,8 @@
             android:id="@+id/classLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/riderclass" />
+            android:text="@string/riderclass"
+            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/classGroup"
@@ -205,7 +206,7 @@
             android:id="@+id/courseLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Course"
+            android:text="@string/course"
             android:textColor="#757575"
             tools:ignore="TextContrastCheck" />
 
