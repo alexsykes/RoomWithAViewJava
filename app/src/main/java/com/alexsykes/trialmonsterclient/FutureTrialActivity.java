@@ -20,30 +20,33 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class FutureTrialActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private String trialid, venue_name, courses, classes;
+    private String trialid, venue_name, courses, classes, entrymode;
     private double lat, lon;
+    private String[] entrymodes, emodes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        trialid = getIntent().getExtras().getString("trialid");
-        lat = getIntent().getDoubleExtra("lat", 0);
-        lon = getIntent().getDoubleExtra("lon", 0);
-        courses = getIntent().getStringExtra("courselist");
-        classes = getIntent().getStringExtra("classlist");
-        venue_name = getIntent().getExtras().getString("venue_name");
+        Intent intent = getIntent();
+        trialid = intent.getExtras().getString("trialid");
+        lat = intent.getDoubleExtra("lat", 0);
+        lon = intent.getDoubleExtra("lon", 0);
+        courses = intent.getStringExtra("courselist");
+        classes = intent.getStringExtra("classlist");
+        venue_name = intent.getExtras().getString("venue_name");
+        entrymode = intent.getExtras().getString("emode");
+        entrymodes = entrymode.split(",");
+
         setContentView(R.layout.activity_web_view);
         WebView webView = findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        // webView.loadUrl("https://android.trialmonster.uk/getTrialDetail.php?id=" + trialid);
         webView.loadUrl("https://android.trialmonster.uk/getTrialDetailNew.php?id=" + trialid);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

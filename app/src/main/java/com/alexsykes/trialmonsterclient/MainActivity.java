@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goFuture() {
-        Log.i("Info", "goFuture: ");
+//        Log.i("Info", "goFuture: ");
         Intent intent = new Intent(MainActivity.this, FutureTrialListActivity.class);
         startActivity(intent);
     }

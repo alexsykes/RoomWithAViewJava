@@ -86,6 +86,8 @@ public class FutureTrialListActivity extends AppCompatActivity {
             String name = jsonArray.getJSONObject(index).getString("name");
             String date = jsonArray.getJSONObject(index).getString("date");
             String club = jsonArray.getJSONObject(index).getString("club");
+            String emode = jsonArray.getJSONObject(index).getString("emode");
+            Log.i("Info", "emode: " + emode);
             String lat = jsonArray.getJSONObject(index).getString("lat");
             String lon = jsonArray.getJSONObject(index).getString("lon");
             String venue_name = jsonArray.getJSONObject(index).getString("venue_name");
@@ -96,6 +98,7 @@ public class FutureTrialListActivity extends AppCompatActivity {
             theTrialHash.put("name", name);
             theTrialHash.put("date", date);
             theTrialHash.put("club", club);
+            theTrialHash.put("emode", emode);
             theTrialHash.put("lat", lat);
             theTrialHash.put("lon", lon);
             theTrialHash.put("venue_name", venue_name);
@@ -125,11 +128,12 @@ public class FutureTrialListActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void onClickCalled(String id, String lat, String lon, String venue_name, String classlist, String courselist) {
+    public void onClickCalled(String id, String lat, String lon, String emode, String venue_name, String classlist, String courselist) {
         Intent intent = new Intent(this, FutureTrialActivity.class);
         intent.putExtra("trialid", id);
         intent.putExtra("lat", Double.valueOf(lat));
         intent.putExtra("lon", Double.valueOf(lon));
+        intent.putExtra("emode", emode);
         intent.putExtra("venue_name", venue_name);
         intent.putExtra("classlist", classlist);
         intent.putExtra("courselist", courselist);
