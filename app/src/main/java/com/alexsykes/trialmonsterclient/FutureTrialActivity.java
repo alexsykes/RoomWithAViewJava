@@ -20,9 +20,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class FutureTrialActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private String trialid, venue_name, courses, classes, entrymode;
+    private String trialid, venue_name, courses, classes, entrymode, enterhere;
     private double lat, lon;
     private String[] entrymodes, emodes;
+    private MenuItem enterButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,7 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
         courses = intent.getStringExtra("courselist");
         classes = intent.getStringExtra("classlist");
         venue_name = intent.getExtras().getString("venue_name");
-        entrymode = intent.getExtras().getString("emode");
-        entrymodes = entrymode.split(",");
+        enterhere = intent.getExtras().getString("enterhere");
 
         setContentView(R.layout.activity_web_view);
         WebView webView = findViewById(R.id.webView);
@@ -52,6 +53,17 @@ public class FutureTrialActivity extends AppCompatActivity implements OnMapReady
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.entry_menu, menu);
+
+        // Toggle button visibility if entry available
+        Intent intent = getIntent();
+        enterhere = intent.getStringExtra("enterhere");
+
+        MenuItem enterButton = menu.findItem(R.id.action_make_entry);
+        enterButton.setVisible(false);
+
+        if (enterhere.equals("1")) {
+            enterButton.setVisible(true);
+        }
         return true;
     }
 
