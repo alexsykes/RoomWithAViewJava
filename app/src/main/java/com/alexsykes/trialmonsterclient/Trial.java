@@ -16,21 +16,6 @@ public class Trial {
     String date;
     String location;
 
-    //
-//    public Trial(int id, String name, String club, String date) {
-//        this.id = id;
-//        this.name = name;
-//        this.club = club;
-//        this.date = date;
-//    }
-//
-//
-//    public Trial(String name, String club, String date, String location) {
-//        this.name = name;
-//        this.club = club;
-//        this.date = date;
-//        this.location = location;
-//    }
     public Trial(int id, String name, String club, String date, String location) {
         this.id = id;
         this.name = name;

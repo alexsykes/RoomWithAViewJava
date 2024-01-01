@@ -11,12 +11,12 @@ import java.util.List;
 @Dao
 public interface TrialDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Trial  trial);
 
     @Query("DELETE FROM trial_table")
     void deleteAll();
 
-    @Query("SELECT * FROM trial_table ORDER BY id DESC")
+    @Query("SELECT * FROM trial_table ORDER BY date DESC")
     LiveData<List<Trial>> getAllTrials();
 }

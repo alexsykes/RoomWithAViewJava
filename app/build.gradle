@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.alexsykes.trialmonsterclient"
         minSdk 21
-        targetSdk 31
-        versionCode 14
+        targetSdk 33
+        versionCode 16
         versionName "Ariel Arrow"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -22,34 +22,58 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     namespace 'com.alexsykes.trialmonsterclient'
+
+    lint {
+        // Turns off checks for the issue IDs you specify.
+        disable 'TypographyFractions', 'TypographyQuotes'
+        // Turns on checks for the issue IDs you specify. These checks are in
+        // addition to the default lint checks.
+        enable 'RtlHardcoded', 'RtlCompat', 'RtlEnabled'
+        // To enable checks for only a subset of issue IDs and ignore all others,
+        // list the issue IDs with the 'check' property instead. This property overrides
+        // any issue IDs you enable or disable using the properties above.
+        checkOnly 'NewApi', 'InlinedApi'
+        // If set to true, turns off analysis progress reporting by lint.
+        quiet true
+        // If set to true (default), stops the build if errors are found.
+        abortOnError false
+        // If true, only report errors.
+        ignoreWarnings true
+        // If true, lint also checks all dependencies as part of its analysis. Recommended for
+        // projects consisting of an app with library dependencies.
+        checkDependencies true
+    }
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
+    implementation "androidx.appcompat:appcompat:1.5.1"
 
     // Dependencies for working with Architecture components
     // You'll probably have to update the version numbers in build.gradle (Project)
 
     // Room components
-    implementation 'androidx.room:room-runtime:2.4.2'
+    implementation 'androidx.room:room-runtime:2.4.3'
     implementation 'com.android.volley:volley:1.2.1'
-    implementation 'com.google.android.gms:play-services-maps:18.0.2'
-    implementation 'androidx.preference:preference:1.1.1'
-    annotationProcessor "androidx.room:room-compiler:2.5.0-alpha01"
-    androidTestImplementation "androidx.room:room-testing:2.5.0-alpha01"
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation('androidx.preference:preference:1.2.0') {
+        exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel'
+        exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
+    }
+    annotationProcessor 'androidx.room:room-compiler:2.4.3'
+    androidTestImplementation 'androidx.room:room-testing:2.4.3'
 
     // Lifecycle components
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.4.1"
-    implementation "androidx.lifecycle:lifecycle-livedata:2.4.1"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.4.1"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.5.1'
 
     // UI
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
 
     // Testing
     testImplementation "junit:junit:$rootProject.junitVersion"

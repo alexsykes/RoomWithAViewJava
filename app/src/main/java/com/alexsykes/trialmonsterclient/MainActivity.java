@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         if(canConnect) {
             getTrialsList();
         } else {
-            showDialog();
+            // showDialog();
         }
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         trialViewModel = new ViewModelProvider(this).get(TrialViewModel.class);
         // Update the cached copy of the words in the adapter.
         trialViewModel.getAllTrials().observe(this, adapter::submitList);
-
     }
 
     @Override
@@ -70,10 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_show_future:
-                goFuture();
-                return true;
+        if (item.getItemId() == R.id.action_show_future) {
+            goFuture();
+            return true;
         }
         return false;
     }
